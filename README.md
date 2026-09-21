@@ -36,4 +36,4 @@ AgentMirror 是一框专门针对渗透测试智能体反制的蜜罐，以AI对
 | <img width="1634" height="1026" alt="image" src="https://github.com/user-attachments/assets/9ab2f81e-2708-4863-9160-bad6d38d7d9c" /> | <img width="1634" height="1026" alt="image" src="https://github.com/user-attachments/assets/98c0c339-4769-45f7-9a86-c18792a091a9" />|
 
 # 评估结果
-使用chatgpt自动针对主流智能体进行评估，使用不同模型来评估蜜罐成果：
+使用chatgpt自动针对主流智能体进行评估，使用不同模型来评估蜜罐成果，测评过程中，全部使用默认提示词，不添加任何提示词及人工主观判断，全由`GPT-6 Astra`自动化完成评估流程：
