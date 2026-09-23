@@ -42,3 +42,4 @@ AgentMirror 是一款专门针对渗透测试智能体反制的蜜罐，以AI对
 | 被测模型 | 日期 | 评测文章 |
 | --- | --- | --- |
 | `deepseek-v4.1-flash` | 2026-09-21 | [蜜罐反制评测：结果与方法](docs/evaluations/deepseek-v4.1-flash/README.md) |
+| `glm-5.3`、`GLM-5.3-Flash` | 2026-09-23 | [GLM 模型蜜罐反制评测：结果与方法](docs/evaluations/glm-5.3-series/README.md) |
