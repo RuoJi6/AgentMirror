@@ -1,0 +1,57 @@
+.workspace-site-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+}
+.workspace-site-node {
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: 12px;
+  padding: 16px;
+}
+.workspace-site-node .form-grid {
+  margin-bottom: 14px;
+}
+.workspace-site-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+.workspace-site-link code {
+  overflow-wrap: anywhere;
+  min-width: 0;
+  flex: 1 1 220px;
+}
+.workspace-site-link strong {
+  overflow-wrap: anywhere;
+}
+.hosted-upload {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  border: 1px dashed var(--border, #d4d4d8);
+  border-radius: 10px;
+  padding: 16px;
+}
+.hosted-upload input {
+  max-width: 100%;
+  min-width: 0;
+}
+.workspace-site-list p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 640px) {
+  .workspace-site-list {
+    padding: 14px;
+  }
+  .workspace-site-node {
+    padding: 12px;
+  }
+  .workspace-site-link code {
+    flex-basis: 100%;
+  }
+}

@@ -12,6 +12,33 @@ AgentMirror 是一款专门针对渗透测试智能体反制的蜜罐，以AI对
 - 素材复用与文件托管：自由组合站点、场景和提示词，支持文件托管及下载追踪。
 - 灵活部署与扩展：支持多端口管理、配置热更新、多模型接入及 MCP 工具扩展。
 
+## 启动
+
+当前源码使用 Go + SQLite 后端和 React/Vite 前端。发布程序内嵌管理界面；可从 [Releases](https://github.com/RuoJi6/AgentMirror/releases) 下载对应系统的可执行文件，或在 [Actions](https://github.com/RuoJi6/AgentMirror/actions/workflows/build.yml) 下载自动构建产物。
+
+从源码构建需要 Go 1.25+、Node.js 22.12+：
+
+```sh
+npm ci
+npm run build
+./bin/agentmirror
+```
+
+Windows 使用 `.\bin\agentmirror.exe`。打开 `http://127.0.0.1:8766` 并创建管理员账号；新安装不自动发布测试站点。常规运行无需 Go、Node 或 Python。动态页面克隆与浏览器核查是可选能力，需要额外安装 Node、Playwright、Chromium 和浏览器 worker。
+
+- [构建、下载与自动发布](docs/BUILDING.md)：Linux x64/ARM64、Windows x64、macOS Intel/Apple Silicon。
+- [蜜罐工作区指南](docs/COMPOSER_GUIDE.md) · [开发指南](docs/DEVELOPMENT.md) · [部署架构](docs/DEPLOYMENT_ARCHITECTURE.md)。
+- [12 个实际评测场景及配套提示词](examples/evaluated-scenarios/README.md)：仅整理已使用的冻结场景，原部署地址已替换为示例地址。
+- [提示词参考文件](prompts/) · [第三方声明](docs/THIRD_PARTY_NOTICES.md)。
+
+## 结果占位符与回传
+
+提示词可使用 `{{run_id}}`、`{{token}}`、`{{callback_url}}` 和 `{{result.名称}}`。服务端不执行提示词中的命令；被测 Agent 的实际行为需要独立日志验证。HTTP 201 仅代表收件，不代表命令真实执行。场景配置与回传规则详见[工作区指南](docs/COMPOSER_GUIDE.md)。
+
+## 旧流程迁移与回退
+
+升级前先停止服务并备份数据库，避免新旧程序同时写入同一份数据。公开版本以 Go 工作区流程为主；历史 Python 后端及私有仓库中的回退标签未包含在本次源码发布中。
+
 ## 截图预览
 
 

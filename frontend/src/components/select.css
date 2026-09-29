@@ -1,0 +1,112 @@
+.select-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 38px;
+  text-align: left;
+  font-weight: 400;
+  cursor: pointer;
+}
+.select-trigger:hover:not(:disabled) {
+  border-color: var(--selected-line);
+}
+.select-trigger:focus-visible,
+.select-trigger[data-state="open"] {
+  outline: none;
+  border-color: var(--focus);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--focus) 15%, transparent);
+}
+.select-trigger[data-placeholder] {
+  color: var(--muted);
+}
+.select-value {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+.select-chevron {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--muted);
+  transition: transform 120ms ease;
+}
+.select-trigger[data-state="open"] .select-chevron {
+  transform: rotate(180deg);
+}
+.select-content {
+  z-index: 100;
+  width: var(--radix-select-trigger-width);
+  max-width: calc(100vw - 24px);
+  max-height: min(300px, var(--radix-select-content-available-height));
+  overflow: hidden;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 4px;
+  box-shadow:
+    0 8px 24px #00000012,
+    0 2px 6px #00000008;
+  font-size: 13px;
+  line-height: 1.5;
+}
+:root[data-theme="dark"] .select-content {
+  box-shadow:
+    0 8px 24px #00000055,
+    0 2px 6px #00000033;
+}
+.select-viewport {
+  padding: 0;
+}
+.select-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 7px 32px 7px 9px;
+  border-radius: 4px;
+  cursor: default;
+  outline: none;
+  user-select: none;
+  overflow-wrap: anywhere;
+}
+.select-option[data-state="checked"] {
+  font-weight: 500;
+}
+.select-option[data-highlighted] {
+  background: var(--hover);
+  color: var(--text);
+}
+.select-option[data-disabled] {
+  color: var(--muted);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.select-check {
+  position: absolute;
+  right: 9px;
+  display: inline-flex;
+}
+.select-scroll-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  color: var(--muted);
+  background: var(--surface);
+}
+.deployment-pagination .select-trigger {
+  min-height: 32px;
+}
+@media (max-width: 620px) {
+  .select-option {
+    min-height: 40px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .select-chevron {
+    transition: none;
+  }
+}

@@ -1,0 +1,17 @@
+[Unit]
+Description=AgentMirror honeypot laboratory
+After=network.target
+
+[Service]
+Type=simple
+User=agentmirror
+Group=agentmirror
+StateDirectory=agentmirror
+WorkingDirectory=/var/lib/agentmirror
+ExecStart=/opt/agentmirror/agentmirror --admin-host 127.0.0.1 --admin-port 8766 --db /var/lib/agentmirror/agentmirror-v2.sqlite3
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=20
+
+[Install]
+WantedBy=multi-user.target

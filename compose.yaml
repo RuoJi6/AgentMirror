@@ -1,0 +1,14 @@
+# Linux host networking lets newly configured listeners bind host ports directly.
+# Management remains on host loopback. No fixed Docker port publication is used.
+services:
+  agentmirror:
+    build: .
+    network_mode: host
+    command: ["--admin-host", "127.0.0.1", "--admin-port", "8766", "--db", "/data/agentmirror-v2.sqlite3"]
+    restart: unless-stopped
+    volumes:
+      - agentmirror-data:/data
+    stop_grace_period: 20s
+
+volumes:
+  agentmirror-data:

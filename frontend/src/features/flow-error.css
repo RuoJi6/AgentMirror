@@ -1,0 +1,41 @@
+.flow-load-error {
+  padding: 24px;
+  margin: 16px 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface, #fff);
+  min-width: 0;
+}
+.flow-load-error h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 12px;
+  font-size: 16px;
+}
+.flow-load-error h3 svg {
+  flex: 0 0 auto;
+}
+.flow-load-error p {
+  line-height: 1.7;
+}
+.flow-recovery-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 18px 0;
+}
+.flow-load-error details {
+  color: var(--muted);
+  font-size: 12px;
+}
+.flow-load-error pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin-bottom: 0;
+}
+@media (max-width: 600px) {
+  .flow-load-error {
+    padding: 16px;
+  }
+}

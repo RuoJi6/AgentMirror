@@ -1,0 +1,73 @@
+import {
+  CheckCircle2,
+  CircleHelp,
+  Globe,
+  GitBranch,
+  MousePointer2,
+  Target,
+  Play,
+  Download,
+} from "lucide-react";
+
+export const kinds = {
+  source: "访问来源",
+  step: "页面操作",
+  request: "HTTP 请求",
+  rule: "命中规则",
+  delivery: "提示词交付点",
+  check: "检查结果",
+  action: "模拟终端动作",
+  callback: "回传接收",
+  download: "文件下载",
+};
+export const states = {
+  pass: "通过",
+  fail: "异常",
+  incomplete: "未完成",
+  observed: "已观测",
+  running: "执行中",
+  mixed: "多种响应",
+};
+export const icons = {
+  source: Globe,
+  step: MousePointer2,
+  request: Globe,
+  rule: GitBranch,
+  delivery: Target,
+  check: CircleHelp,
+  action: Play,
+  callback: CheckCircle2,
+  download: Download,
+};
+export const nodeColors = {
+  source: "#64748b",
+  step: "#64748b",
+  request: "#3b82f6",
+  rule: "#f59e0b",
+  delivery: "#8b5cf6",
+  check: "#ec4899",
+  action: "#f43f5e",
+  callback: "#10b981",
+  download: "#0891b2",
+};
+export const relations = {
+  origin: { label: "来源归属", color: "#94a3b8" },
+  referer: { label: "Referer 关联", color: "#2563eb" },
+  redirect: { label: "重定向关联", color: "#0891b2" },
+  receipt_context: { label: "交付 / 回传会话", color: "#059669" },
+  same_session: { label: "同会话先后", color: "#64748b", dashed: true },
+  inferred_phase: { label: "阶段推测", color: "#d97706", dashed: true },
+  first_seen: { label: "页内首次出现顺序", color: "#64748b", dashed: true },
+  observed_next: { label: "时间先后", color: "#64748b", dashed: true },
+  downloaded: { label: "文件下载", color: "#0891b2" },
+  callback_attempt: { label: "回传尝试", color: "#ef4444", dashed: true },
+  next: { label: "访问顺序", color: "#6366f1" },
+  request: { label: "发起请求", color: "#10b981" },
+  matched: { label: "规则命中", color: "#f59e0b" },
+  delivered: { label: "提示词交付", color: "#8b5cf6" },
+  followed_response: { label: "响应引导", color: "#6366f1", dashed: true },
+  controlled_replay: { label: "受控复现", color: "#f43f5e", dashed: true },
+  assessment: { label: "内容判断", color: "#ec4899" },
+  observed_action: { label: "实际操作", color: "#f43f5e", dashed: true },
+  received: { label: "回传接收", color: "#0d9488" },
+};

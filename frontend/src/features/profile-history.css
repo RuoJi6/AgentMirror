@@ -1,0 +1,297 @@
+.profile-history-modal.modal.wide {
+  width: min(1180px, calc(100vw - 40px));
+  max-width: none;
+}
+.profile-history-modal .modal-body {
+  padding: 0;
+}
+.profile-history-layout {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  min-height: 480px;
+}
+.profile-history-timeline.history-list {
+  padding: 20px 12px;
+  background: var(--bg);
+  max-height: 68vh;
+  overflow-y: auto;
+}
+.profile-history-list-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--muted);
+  padding: 0 12px 16px;
+}
+.profile-history-timeline button {
+  position: relative;
+  padding: 15px 14px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+.profile-history-timeline button.selected {
+  background: var(--selected);
+  border-color: var(--selected-line);
+}
+.profile-history-timeline button:hover {
+  background: var(--hover);
+}
+.profile-history-timeline strong {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+.profile-history-timeline time,
+.profile-history-timeline small {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 9px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.profile-history-detail {
+  padding: 26px 28px;
+  min-width: 0;
+  max-height: 68vh;
+  overflow: auto;
+}
+.profile-revision-origin {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 9px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.profile-revision-origin svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.profile-revision-origin[data-origin="agent"] {
+  color: var(--text);
+}
+.profile-history-detail > .profile-revision-origin {
+  margin: -8px 0 20px;
+}
+.profile-history-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.profile-history-heading h3 {
+  margin: 0;
+  font-size: 20px;
+  overflow-wrap: anywhere;
+}
+.profile-history-heading .button {
+  margin-left: auto;
+}
+.profile-history-detail > p {
+  margin: 10px 0 20px;
+}
+.profile-history-detail .tabs {
+  margin-bottom: 20px;
+}
+.profile-history-comparison {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.profile-history-comparison .field {
+  flex: 1;
+  min-width: 180px;
+  margin: 0;
+}
+.profile-history-comparison > p {
+  margin: 20px 0 0;
+  color: var(--muted);
+}
+.profile-history-empty {
+  padding: 14px;
+  background: var(--bg);
+  border-radius: 6px;
+  color: var(--muted);
+}
+.profile-metadata-change {
+  margin-bottom: 20px;
+}
+.profile-metadata-change h4 {
+  margin: 0 0 10px;
+  font-size: 13px;
+}
+.profile-metadata-change > div {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+  margin-top: 5px;
+}
+.profile-metadata-change > div > span {
+  padding-top: 9px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.profile-metadata-change pre,
+.profile-history-body,
+.profile-history-metadata pre {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 6px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font:
+    13px/1.8 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+}
+.profile-history-modal .is-added {
+  background: var(--green-bg);
+  color: var(--text);
+}
+.profile-history-modal .is-removed {
+  background: #fff1f2;
+  color: var(--text);
+}
+.profile-diff-added {
+  color: var(--green);
+}
+.profile-diff-removed {
+  color: #be123c;
+}
+:root[data-theme="dark"] .profile-history-modal .is-removed {
+  background: #391b25;
+}
+:root[data-theme="dark"] .profile-history-modal .profile-diff-removed {
+  color: #fda4af;
+}
+.profile-diff-toolbar {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 12px;
+}
+.profile-body-diff {
+  margin-bottom: 24px;
+}
+.profile-diff-toolbar .checkbox-label {
+  margin-left: auto;
+}
+.profile-body-diff > .muted {
+  font-size: 12px;
+  margin: 10px 0;
+}
+.profile-diff-lines {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.profile-diff-lines:empty {
+  display: none;
+}
+.profile-diff-line {
+  display: grid;
+  grid-template-columns: 34px 34px 16px minmax(0, 1fr);
+  gap: 4px;
+  align-items: start;
+  padding: 5px 8px;
+  font:
+    12px/1.8 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+}
+.profile-line-number {
+  color: var(--muted);
+  text-align: right;
+  user-select: none;
+}
+.profile-diff-line code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: inherit;
+  padding: 0 4px;
+  background: none;
+  color: inherit;
+}
+.profile-body-diff > .button {
+  margin-top: 12px;
+}
+.profile-history-body {
+  border: 1px solid var(--line);
+  background: var(--bg);
+}
+.profile-history-metadata {
+  margin-top: 16px;
+  color: var(--muted);
+}
+.profile-history-metadata summary {
+  cursor: pointer;
+}
+.profile-history-metadata pre {
+  color: var(--text);
+}
+.profile-history-footer-note {
+  margin-right: auto;
+  color: var(--muted);
+  font-size: 12px;
+  flex: 1;
+}
+.profile-history-modal .modal-body > p,
+.profile-history-modal .modal-body > [role="alert"] {
+  padding: 24px;
+}
+@media (max-width: 700px) {
+  .profile-history-modal.modal.wide {
+    width: calc(100vw - 20px);
+  }
+  .profile-history-layout {
+    display: flex;
+    flex-direction: column;
+  }
+  .profile-history-timeline.history-list {
+    display: flex;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 12px;
+    max-height: none;
+    overflow-x: auto;
+    gap: 8px;
+  }
+  .profile-history-list-title {
+    display: none;
+  }
+  .profile-history-timeline button {
+    min-width: 180px;
+    flex: 0 0 180px;
+    margin: 0;
+  }
+  .profile-history-detail {
+    padding: 18px 14px;
+    max-height: none;
+  }
+  .profile-history-heading h3 {
+    font-size: 17px;
+  }
+  .profile-history-footer-note {
+    flex-basis: 100%;
+  }
+  .profile-history-modal .modal-footer {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .profile-diff-line {
+    grid-template-columns: 25px 25px 12px minmax(0, 1fr);
+    gap: 2px;
+    padding: 4px;
+  }
+}

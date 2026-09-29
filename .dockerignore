@@ -1,0 +1,13 @@
+node_modules
+dist
+bin
+release
+data
+.git
+.codex
+.agents
+__pycache__
+**/__pycache__
+docs/verification
+docs/concepts
+internal/lab/testdata

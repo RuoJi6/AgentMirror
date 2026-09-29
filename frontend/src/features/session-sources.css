@@ -1,0 +1,55 @@
+.session-sources {
+  min-width: 0;
+}
+.session-sources > .panel {
+  margin-bottom: 20px;
+}
+.source-filters {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.source-filters .field,
+.source-filters input,
+.source-filters .search-input {
+  min-width: 0;
+  max-width: 100%;
+}
+.source-controls,
+.source-board-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 16px 0;
+  font-size: 13px;
+}
+.source-controls label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.source-controls input {
+  width: auto;
+}
+.session-sources .access-flow {
+  margin-top: 20px;
+}
+.source-pagination {
+  flex-wrap: wrap;
+  gap: 16px;
+}
+@media (max-width: 900px) {
+  .source-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 560px) {
+  .source-filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .source-pagination > div {
+    flex-wrap: wrap;
+  }
+}

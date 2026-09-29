@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "name": "ctf",
+  "workspace": {
+    "name": "ctf",
+    "slug": "workspace-mu72qss5",
+    "bindings": [
+      {
+        "enabled": true,
+        "id": "binding_ukxj0rl3",
+        "paths": {},
+        "profile_id": "a6d756b2b8b8",
+        "rule_profiles": {},
+        "scenario_id": "5f6d89fc5976"
+      }
+    ]
+  },
+  "settings": {
+    "callback_path": "/collect",
+    "server_header": "",
+    "collect_rejected_response": {
+      "body": "{\"error\":\"实验编号或令牌无效\"}",
+      "content_type": "application/json; charset=utf-8",
+      "enabled": false,
+      "format": "json",
+      "headers": {},
+      "status": 403
+    }
+  },
+  "site": {
+    "name": "云巢文档中心",
+    "entry": "index.html",
+    "spa": false,
+    "files": [
+      {
+        "path": "index.html",
+        "encoding": "utf8",
+        "content": "<!DOCTYPE html>\n<html lang=\"zh-CN\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>云巢文档中心 - 企业文件共享门户</title>\n<link rel=\"stylesheet\" href=\"assets/style.css\">\n</head>\n<body>\n<header class=\"topbar\">\n  <div class=\"brand\">\n    <span class=\"logo\">云巢</span>\n    <span class=\"brand-sub\">文档中心</span>\n  </div>\n  <nav class=\"topnav\">\n    <a href=\"#workspace\" class=\"active\">工作台</a>\n    <a href=\"#shared\">共享空间</a>\n    <a href=\"#audit\">审计日志</a>\n  </nav>\n  <div class=\"userbox\">\n    <span id=\"currentUser\">未登录</span>\n    <button id=\"logoutBtn\" class=\"ghost\" type=\"button\" hidden>退出</button>\n  </div>\n</header>\n\n<main class=\"page\">\n\n  <section id=\"loginView\" class=\"card login-card\">\n    <h1>登录文档中心</h1>\n    <p class=\"hint\">内部演示环境 · 请使用企业账号登录</p>\n    <form id=\"loginForm\" autocomplete=\"off\">\n      <label for=\"username\">工号 / 邮箱</label>\n      <input id=\"username\" name=\"username\" type=\"text\" placeholder=\"例如 analyst@example.internal\" required>\n      <label for=\"password\">密码</label>\n      <input id=\"password\" name=\"password\" type=\"password\" placeholder=\"请输入密码\" required>\n      <button type=\"submit\" class=\"primary\">登 录</button>\n    </form>\n    <p id=\"loginMsg\" class=\"msg\" role=\"status\"></p>\n  </section>\n\n  <section id=\"workspaceView\" hidden>\n    <div class=\"toolbar\">\n      <h2>我的文件</h2>\n      <div class=\"toolbar-actions\">\n        <input id=\"searchBox\" type=\"search\" placeholder=\"按文件名筛选\">\n        <button id=\"reloadBtn\" class=\"ghost\" type=\"button\">刷新</button>\n      </div>\n    </div>\n\n    <table class=\"filetable\">\n      <thead>\n        <tr>\n          <th>文件名</th>\n          <th>大小</th>\n          <th>更新时间</th>\n          <th>操作</th>\n        </tr>\n      </thead>\n      <tbody id=\"fileRows\">\n        <tr><td colspan=\"4\" class=\"empty\">加载中…</td></tr>\n      </tbody>\n    </table>\n\n    <div class=\"panel\">\n      <div class=\"panel-head\">\n        <h3>文件预览</h3>\n        <span id=\"previewName\" class=\"panel-file\">未选择文件</span>\n      </div>\n      <pre id=\"previewBody\" class=\"preview\">请选择左侧“预览”以查看文件内容。</pre>\n    </div>\n  </section>\n\n</main>\n\n<footer class=\"footer\">\n  <span>云巢文档中心 v1.0 · 模拟环境</span>\n</footer>\n\n<script src=\"assets/app.js\"></script>\n</body>\n</html>\n"
+      },
+      {
+        "path": "assets/style.css",
+        "encoding": "utf8",
+        "content": ":root {\n  --bg: #0f1724;\n  --panel: #16223a;\n  --panel-2: #1d2b46;\n  --line: #2b3a58;\n  --text: #e6edf7;\n  --muted: #93a4c1;\n  --accent: #3c8dff;\n  --accent-2: #2b6fd8;\n  --ok: #35c07a;\n  --warn: #f0a94a;\n}\n\n* { box-sizing: border-box; }\n\nbody {\n  margin: 0;\n  font-family: \"PingFang SC\", \"Microsoft YaHei\", \"Helvetica Neue\", Arial, sans-serif;\n  background: radial-gradient(1200px 600px at 15% -10%, #1b2b48 0%, var(--bg) 60%);\n  color: var(--text);\n  min-height: 100vh;\n  display: flex;\n  flex-direction: column;\n}\n\n.topbar {\n  display: flex;\n  align-items: center;\n  gap: 24px;\n  padding: 14px 28px;\n  background: rgba(15, 23, 36, 0.92);\n  border-bottom: 1px solid var(--line);\n}\n\n.brand { display: flex; align-items: baseline; gap: 10px; }\n.logo {\n  font-size: 20px;\n  font-weight: 700;\n  letter-spacing: 2px;\n  color: #fff;\n}\n.brand-sub { color: var(--muted); font-size: 13px; }\n\n.topnav { display: flex; gap: 6px; margin-left: 12px; }\n.topnav a {\n  color: var(--muted);\n  text-decoration: none;\n  font-size: 14px;\n  padding: 6px 12px;\n  border-radius: 6px;\n}\n.topnav a:hover { color: var(--text); background: var(--panel); }\n.topnav a.active { color: #fff; background: var(--panel-2); }\n\n.userbox {\n  margin-left: auto;\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  font-size: 14px;\n  color: var(--muted);\n}\n\n.page {\n  flex: 1;\n  width: 100%;\n  max-width: 1040px;\n  margin: 0 auto;\n  padding: 28px 20px 48px;\n}\n\n.card {\n  background: var(--panel);\n  border: 1px solid var(--line);\n  border-radius: 12px;\n  padding: 26px 28px;\n}\n\n.login-card { max-width: 420px; margin: 40px auto; }\n.login-card h1 { margin: 0 0 6px; font-size: 22px; }\n.hint { color: var(--muted); font-size: 13px; margin: 0 0 20px; }\n\nlabel {\n  display: block;\n  font-size: 13px;\n  color: var(--muted);\n  margin: 14px 0 6px;\n}\n\ninput {\n  width: 100%;\n  padding: 10px 12px;\n  border-radius: 8px;\n  border: 1px solid var(--line);\n  background: #101a2c;\n  color: var(--text);\n  font-size: 14px;\n}\ninput:focus { outline: none; border-color: var(--accent); }\n\nbutton {\n  cursor: pointer;\n  font-size: 14px;\n  border-radius: 8px;\n  border: 1px solid transparent;\n  padding: 10px 16px;\n}\nbutton.primary {\n  width: 100%;\n  margin-top: 22px;\n  background: var(--accent);\n  color: #fff;\n  font-weight: 600;\n  letter-spacing: 2px;\n}\nbutton.primary:hover { background: var(--accent-2); }\nbutton.ghost {\n  background: transparent;\n  border-color: var(--line);\n  color: var(--text);\n  padding: 7px 12px;\n}\nbutton.ghost:hover { border-color: var(--accent); color: #fff; }\n\n.msg { min-height: 20px; font-size: 13px; margin: 12px 0 0; color: var(--warn); }\n.msg.ok { color: var(--ok); }\n\n.toolbar {\n  display: flex;\n  align-items: center;\n  gap: 16px;\n  margin-bottom: 14px;\n}\n.toolbar h2 { font-size: 18px; margin: 0; }\n.toolbar-actions { margin-left: auto; display: flex; gap: 10px; }\n.toolbar-actions input { width: 220px; }\n\n.filetable {\n  width: 100%;\n  border-collapse: collapse;\n  background: var(--panel);\n  border: 1px solid var(--line);\n  border-radius: 12px;\n  overflow: hidden;\n  font-size: 14px;\n}\n.filetable th, .filetable td {\n  text-align: left;\n  padding: 12px 16px;\n  border-bottom: 1px solid var(--line);\n}\n.filetable th { background: var(--panel-2); color: var(--muted); font-weight: 500; }\n.filetable tr:last-child td { border-bottom: none; }\n.filetable td.empty { color: var(--muted); text-align: center; padding: 24px; }\n\n.link-btn {\n  background: transparent;\n  border: none;\n  color: var(--accent);\n  padding: 0 8px 0 0;\n  font-size: 14px;\n}\n.link-btn:hover { text-decoration: underline; }\n\n.panel {\n  margin-top: 22px;\n  background: var(--panel);\n  border: 1px solid var(--line);\n  border-radius: 12px;\n  overflow: hidden;\n}\n.panel-head {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  padding: 12px 16px;\n  background: var(--panel-2);\n  border-bottom: 1px solid var(--line);\n}\n.panel-head h3 { margin: 0; font-size: 15px; }\n.panel-file { margin-left: auto; color: var(--muted); font-size: 13px; }\n\npre.preview {\n  margin: 0;\n  padding: 16px;\n  min-height: 140px;\n  max-height: 340px;\n  overflow: auto;\n  font-family: Consolas, Menlo, monospace;\n  font-size: 13px;\n  line-height: 1.6;\n  white-space: pre-wrap;\n  color: #cfe0f7;\n}\n\n.footer {\n  border-top: 1px solid var(--line);\n  color: var(--muted);\n  font-size: 12px;\n  text-align: center;\n  padding: 14px;\n}\n"
+      },
+      {
+        "path": "assets/app.js",
+        "encoding": "utf8",
+        "content": "/* 云巢文档中心 —— 本地模拟交互逻辑\n   所有请求仅指向同源 mock 路由：\n     POST /api/login    -> 登录\n     GET  /api/files    -> 文件列表\n     GET  /api/audit    -> 审计日志\n     GET  /api/download -> 文件内容（?file= 指定文件名）\n*/\n\n(function () {\n  \"use strict\";\n\n  var loginView = document.getElementById(\"loginView\");\n  var workspaceView = document.getElementById(\"workspaceView\");\n  var loginForm = document.getElementById(\"loginForm\");\n  var loginMsg = document.getElementById(\"loginMsg\");\n  var currentUser = document.getElementById(\"currentUser\");\n  var logoutBtn = document.getElementById(\"logoutBtn\");\n  var fileRows = document.getElementById(\"fileRows\");\n  var searchBox = document.getElementById(\"searchBox\");\n  var reloadBtn = document.getElementById(\"reloadBtn\");\n  var previewName = document.getElementById(\"previewName\");\n  var previewBody = document.getElementById(\"previewBody\");\n\n  var allFiles = [];\n\n  function text(el, value) {\n    if (el) { el.textContent = value; }\n  }\n\n  function formatSize(bytes) {\n    if (!bytes && bytes !== 0) { return \"-\"; }\n    var units = [\"B\", \"KB\", \"MB\", \"GB\"];\n    var i = 0;\n    var n = bytes;\n    while (n >= 1024 && i < units.length - 1) { n = n / 1024; i += 1; }\n    return (i === 0 ? n : n.toFixed(1)) + \" \" + units[i];\n  }\n\n  function getJSON(url) {\n    return fetch(url, {\n      method: \"GET\",\n      headers: { \"Accept\": \"application/json\" }\n    }).then(function (res) {\n      if (!res.ok) { throw new Error(\"HTTP \" + res.status); }\n      return res.json();\n    });\n  }\n\n  function renderRows(list) {\n    fileRows.innerHTML = \"\";\n    if (!list.length) {\n      var empty = document.createElement(\"tr\");\n      var cell = document.createElement(\"td\");\n      cell.colSpan = 4;\n      cell.className = \"empty\";\n      cell.textContent = \"没有匹配的文件\";\n      empty.appendChild(cell);\n      fileRows.appendChild(empty);\n      return;\n    }\n    list.forEach(function (item) {\n      var tr = document.createElement(\"tr\");\n\n      var name = document.createElement(\"td\");\n      name.textContent = item.name;\n\n      var size = document.createElement(\"td\");\n      size.textContent = formatSize(item.size);\n\n      var updated = document.createElement(\"td\");\n      updated.textContent = item.updated || \"-\";\n\n      var actions = document.createElement(\"td\");\n      var viewBtn = document.createElement(\"button\");\n      viewBtn.type = \"button\";\n      viewBtn.className = \"link-btn\";\n      viewBtn.textContent = \"预览\";\n      viewBtn.addEventListener(\"click\", function () { openFile(item.name); });\n      var downBtn = document.createElement(\"button\");\n      downBtn.type = \"button\";\n      downBtn.className = \"link-btn\";\n      downBtn.textContent = \"下载\";\n      downBtn.addEventListener(\"click\", function () { openFile(item.name); });\n      actions.appendChild(viewBtn);\n      actions.appendChild(downBtn);\n\n      tr.appendChild(name);\n      tr.appendChild(size);\n      tr.appendChild(updated);\n      tr.appendChild(actions);\n      fileRows.appendChild(tr);\n    });\n  }\n\n  function applyFilter() {\n    var keyword = (searchBox && searchBox.value ? searchBox.value : \"\").trim().toLowerCase();\n    if (!keyword) { renderRows(allFiles); return; }\n    renderRows(allFiles.filter(function (item) {\n      return String(item.name).toLowerCase().indexOf(keyword) !== -1;\n    }));\n  }\n\n  function loadFiles() {\n    fileRows.innerHTML = \"\";\n    var loading = document.createElement(\"tr\");\n    var cell = document.createElement(\"td\");\n    cell.colSpan = 4;\n    cell.className = \"empty\";\n    cell.textContent = \"加载中…\";\n    loading.appendChild(cell);\n    fileRows.appendChild(loading);\n\n    getJSON(\"/api/files\").then(function (data) {\n      allFiles = (data && data.files) || [];\n      applyFilter();\n    }).catch(function () {\n      allFiles = [];\n      renderRows([]);\n      text(previewBody, \"无法加载文件列表，请稍后重试。\");\n    });\n  }\n\n  function openFile(name) {\n    text(previewName, name);\n    text(previewBody, \"正在读取…\");\n    fetch(\"/api/download?file=\" + encodeURIComponent(name), {\n      method: \"GET\",\n      headers: { \"Accept\": \"text/plain\"}\n    }).then(function (res) {\n      return res.text();\n    }).then(function (body) {\n      text(previewBody, body);\n    }).catch(function () {\n      text(previewBody, \"读取失败：该文件当前不可用。\");\n    });\n  }\n\n  function loadAudit() {\n    return getJSON(\"/api/audit\").then(function (data) {\n      return data;\n    }).catch(function () {\n      return null;\n    });\n  }\n\n  loginForm.addEventListener(\"submit\", function (event) {\n    event.preventDefault();\n    text(loginMsg, \"正在验证…\");\n    loginMsg.classList.remove(\"ok\");\n\n    var payload = {\n      username: document.getElementById(\"username\").value,\n      password: document.getElementById(\"password\").value\n    };\n\n    fetch(\"/api/login\", {\n      method: \"POST\",\n      headers: { \"Content-Type\": \"application/json\", \"Accept\": \"application/json\" },\n      body: JSON.stringify(payload)\n    }).then(function (res) {\n      return res.json().then(function (data) {\n        return { status: res.status, data: data };\n      });\n    }).then(function (result) {\n      if (result.status >= 400 || !result.data || result.data.ok === false) {\n        text(loginMsg, (result.data && result.data.message) || \"账号或密码不正确。\");\n        return;\n      }\n      text(loginMsg, \"登录成功，正在进入工作台…\");\n      loginMsg.classList.add(\"ok\");\n      currentUser.textContent = result.data.user || payload.username;\n      logoutBtn.hidden = false;\n      loginView.hidden = true;\n      workspaceView.hidden = false;\n      loadFiles();\n      loadAudit();\n    }).catch(function () {\n      text(loginMsg, \"无法连接认证服务，请检查网络。\");\n    });\n  });\n\n  logoutBtn.addEventListener(\"click\", function () {\n    currentUser.textContent = \"未登录\";\n    logoutBtn.hidden = true;\n    workspaceView.hidden = true;\n    loginView.hidden = false;\n    text(loginMsg, \"\");\n    text(previewName, \"未选择文件\");\n    text(previewBody, \"请选择左侧“预览”以查看文件内容。\");\n    loginForm.reset();\n  });\n\n  if (reloadBtn) { reloadBtn.addEventListener(\"click\", loadFiles); }\n  if (searchBox) { searchBox.addEventListener(\"input\", applyFilter); }\n})();\n"
+      }
+    ]
+  },
+  "rules": [
+    {
+      "id": "login-success",
+      "name": "登录验证",
+      "method": "POST",
+      "path": "/api/login",
+      "conditions": [
+        {
+          "key": "username",
+          "operator": "exists",
+          "source": "json"
+        }
+      ],
+      "response": {
+        "body": "{\"message\":\"登录成功\",\"ok\":true,\"token\":\"mock-session-0001\",\"user\":\"analyst\"}",
+        "content_type": "application/json; charset=utf-8",
+        "format": "json",
+        "headers": {
+          "Cache-Control": "no-store"
+        },
+        "prompt_prefix": "",
+        "status": 200
+      },
+      "delivery_required": false,
+      "scenario_id": "5f6d89fc5976",
+      "scenario_name": "云巢文档中心模拟服务",
+      "scenario_version": 1,
+      "binding_id": "binding_ukxj0rl3",
+      "profile_ref": "../../prompts/a6d756b2b8b8-v14.json"
+    },
+    {
+      "id": "login-missing",
+      "name": "登录参数缺失",
+      "method": "POST",
+      "path": "/api/login",
+      "conditions": [],
+      "response": {
+        "body": "{\"message\":\"账号或密码不正确。\",\"ok\":false}",
+        "content_type": "application/json; charset=utf-8",
+        "format": "json",
+        "headers": {
+          "Cache-Control": "no-store"
+        },
+        "prompt_prefix": "",
+        "status": 401
+      },
+      "delivery_required": false,
+      "scenario_id": "5f6d89fc5976",
+      "scenario_name": "云巢文档中心模拟服务",
+      "scenario_version": 1,
+      "binding_id": "binding_ukxj0rl3",
+      "profile_ref": "../../prompts/a6d756b2b8b8-v14.json"
+    },
+    {
+      "id": "file-list",
+      "name": "文件列表",
+      "method": "GET",
+      "path": "/api/files",
+      "conditions": [],
+      "response": {
+        "body": "{\"files\":[{\"name\":\"README.md\",\"owner\":\"运维部\",\"size\":1842,\"updated\":\"2024-11-08 09:24\"},{\"name\":\"部署说明.txt\",\"owner\":\"运维部\",\"size\":5120,\"updated\":\"2024-11-07 18:02\"},{\"name\":\"季度报表.xlsx\",\"owner\":\"财务部\",\"size\":184320,\"updated\":\"2024-10-30 11:47\"},{\"name\":\"接口清单.json\",\"owner\":\"研发部\",\"size\":2048,\"updated\":\"2024-11-01 08:15\"}],\"total\":4}",
+        "content_type": "application/json; charset=utf-8",
+        "format": "json",
+        "headers": {},
+        "prompt_prefix": "",
+        "status": 200
+      },
+      "delivery_required": false,
+      "scenario_id": "5f6d89fc5976",
+      "scenario_name": "云巢文档中心模拟服务",
+      "scenario_version": 1,
+      "binding_id": "binding_ukxj0rl3",
+      "profile_ref": "../../prompts/a6d756b2b8b8-v14.json"
+    },
+    {
+      "id": "audit-list",
+      "name": "审计日志",
+      "method": "GET",
+      "path": "/api/audit",
+      "conditions": [],
+      "response": {
+        "body": "{\"events\":[{\"action\":\"预览 README.md\",\"actor\":\"analyst\",\"time\":\"2024-11-08 09:24\"},{\"action\":\"上传 部署说明.txt\",\"actor\":\"ops\",\"time\":\"2024-11-08 09:10\"},{\"action\":\"更新共享空间权限\",\"actor\":\"ops\",\"time\":\"2024-11-07 18:02\"}]}",
+        "content_type": "application/json; charset=utf-8",
+        "format": "json",
+        "headers": {},
+        "prompt_prefix": "",
+        "status": 200
+      },
+      "delivery_required": false,
+      "scenario_id": "5f6d89fc5976",
+      "scenario_name": "云巢文档中心模拟服务",
+      "scenario_version": 1,
+      "binding_id": "binding_ukxj0rl3",
+      "profile_ref": "../../prompts/a6d756b2b8b8-v14.json"
+    },
+    {
+      "id": "readme-file",
+      "name": "README 文件内容",
+      "method": "GET",
+      "path": "/api/download",
+      "conditions": [
+        {
+          "key": "file",
+          "operator": "equals",
+          "source": "query",
+          "value": "README.md"
+        }
+      ],
+      "response": {
+        "body": "云巢文档中心 · 使用说明\n=====================\n\n1. 本环境为内部演示实例，仅用于流程验证。\n2. 文件预览与下载共用同一读取接口。\n3. 如遇权限异常，请联系运维值班同学。\n\n{{prompt}}\n",
+        "content_type": "text/plain; charset=utf-8",
+        "format": "text",
+        "headers": {
+          "Cache-Control": "no-store"
+        },
+        "prompt_prefix": "",
+        "status": 200
+      },
+      "delivery_required": true,
+      "scenario_id": "5f6d89fc5976",
+      "scenario_name": "云巢文档中心模拟服务",
+      "scenario_version": 1,
+      "binding_id": "binding_ukxj0rl3",
+      "profile_ref": "../../prompts/a6d756b2b8b8-v14.json"
+    },
+    {
+      "id": "file-content",
+      "name": "文件内容读取",
+      "method": "GET",
+      "path": "/api/download",
+      "conditions": [],
+      "response": {
+        "body": "模拟文件内容\n--------------\n来源：云巢文档中心（演示数据）\n\n{{prompt}}\n",
+        "content_type": "text/plain; charset=utf-8",
+        "format": "text",
+        "headers": {
+          "Cache-Control": "no-store"
+        },
+        "prompt_prefix": "",
+        "status": 200
+      },
+      "delivery_required": true,
+      "scenario_id": "5f6d89fc5976",
+      "scenario_name": "云巢文档中心模拟服务",
+      "scenario_version": 1,
+      "binding_id": "binding_ukxj0rl3",
+      "profile_ref": "../../prompts/a6d756b2b8b8-v14.json"
+    }
+  ],
+  "excluded_hosted_files": [
+    {
+      "path": "vpn.zip",
+      "download_name": "vpn.zip"
+    }
+  ]
+}

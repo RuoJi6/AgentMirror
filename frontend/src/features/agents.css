@@ -1,0 +1,267 @@
+.agent-management-layout {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.mcp-form {
+  border: 0;
+  margin: 0;
+  min-width: 0;
+}
+.mcp-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.mcp-management .panel {
+  min-width: 0;
+}
+.mcp-management .agent-tool code,
+.agent-tool details p {
+  overflow-wrap: anywhere;
+}
+.mcp-management .panel-header {
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.agent-definition-list,
+.review-history {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.agent-definition-list > button,
+.review-history > button {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  text-align: left;
+  border: 1px solid transparent;
+  background: transparent;
+  color: inherit;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.agent-definition-list > button.active,
+.review-history > button.active {
+  background: var(--surface-hover, #f1f2f4);
+  border-color: var(--border, #e3e4e8);
+}
+.agent-definition-list strong,
+.agent-definition-list small,
+.review-history span,
+.review-history small {
+  display: block;
+}
+.agent-definition-list small,
+.review-history small {
+  color: var(--muted, #777);
+  margin-top: 6px;
+}
+.agent-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.agent-check input {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+.agent-tool-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.agent-tool {
+  border: 1px solid var(--border, #e3e4e8);
+  padding: 16px;
+  border-radius: 10px;
+  min-width: 0;
+}
+.agent-tool p {
+  font-size: 13px;
+  color: var(--muted, #777);
+  line-height: 1.6;
+}
+.agent-tool pre,
+.workspace-review pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 360px;
+  overflow: auto;
+  font-size: 12px;
+  line-height: 1.6;
+  background: var(--surface-hover, #f6f7f8);
+  padding: 14px;
+  border-radius: 8px;
+}
+.review-results-layout {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+.review-history > button {
+  flex-direction: column;
+  gap: 6px;
+  margin: 5px;
+}
+.review-step {
+  display: grid;
+  grid-template-columns: 24px 150px minmax(0, 1fr) minmax(0, 1fr) 46px;
+  gap: 10px;
+  align-items: center;
+  margin: 12px 0;
+}
+.review-flow {
+  padding: 14px 0;
+  border-top: 1px solid var(--border, #ddd);
+}
+.review-check {
+  border: 1px solid var(--border, #ddd);
+  border-radius: 10px;
+  padding: 14px;
+}
+.review-check summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  flex-wrap: wrap;
+}
+.review-check.fail {
+  border-left: 3px solid #d94a4a;
+}
+.review-check.incomplete {
+  border-left: 3px solid #c49029;
+}
+.review-check.pass {
+  border-left: 3px solid #41966c;
+}
+.review-check small {
+  margin-left: auto;
+  color: var(--muted, #777);
+}
+.review-counts {
+  display: flex;
+  gap: 30px;
+  padding: 14px;
+  background: var(--surface-hover, #f6f7f8);
+  border-radius: 10px;
+}
+.review-summary {
+  white-space: pre-wrap;
+  line-height: 1.7;
+}
+.review-tool-event {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border, #ddd);
+}
+.review-tool-event span {
+  margin-left: 12px;
+}
+.workspace-review .panel {
+  min-width: 0;
+}
+@media (max-width: 850px) {
+  .agent-management-layout,
+  .review-results-layout {
+    grid-template-columns: 1fr;
+  }
+  .agent-definition-list {
+    flex-direction: row;
+    overflow: auto;
+  }
+  .agent-definition-list > button {
+    min-width: 210px;
+  }
+  .agent-tool-list {
+    grid-template-columns: 1fr;
+  }
+  .review-step {
+    grid-template-columns: 24px minmax(0, 1fr) 46px;
+  }
+  .review-step input {
+    grid-column: 2;
+  }
+  .review-step .button {
+    grid-column: 3;
+    grid-row: auto;
+  }
+  .review-counts {
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .workspace-review .panel-header {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .workspace-review .panel-header .actions {
+    flex-wrap: wrap;
+  }
+}
+.review-chat-report {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  margin: 12px 0;
+  min-width: 0;
+}
+.review-chat-report > summary {
+  cursor: pointer;
+  font-weight: 500;
+}
+.review-chat-report[open] > summary {
+  margin-bottom: 12px;
+}
+.agent-conversation-group {
+  min-width: 0;
+}
+.agent-group-heading {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  padding: 12px 6px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.agent-group-heading strong {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.agent-group-heading small {
+  color: var(--muted);
+}
+.agent-group-heading svg {
+  flex: none;
+}
+.agent-group-heading .expanded {
+  transform: rotate(90deg);
+}
+.agent-group-running {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.agent-conversation-group .agent-conversation {
+  width: 100%;
+}
+.review-chat-report pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 360px;
+  overflow: auto;
+}

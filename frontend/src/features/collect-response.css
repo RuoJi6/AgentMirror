@@ -1,0 +1,61 @@
+.collect-response-settings fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.collect-response-settings .padded > p {
+  margin: 0 0 18px;
+  color: var(--muted);
+}
+.collect-response-fields {
+  margin-top: 20px;
+}
+.collect-response-settings textarea.collect-response-editor {
+  min-height: 160px;
+  font:
+    13px/1.8 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+}
+.collect-response-settings .muted {
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.collect-response-default {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--bg);
+  overflow-wrap: anywhere;
+}
+.collect-response-actions {
+  margin-top: 22px;
+  flex-wrap: wrap;
+}
+.collect-response-preview {
+  margin-top: 20px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.collect-response-preview .actions {
+  flex-wrap: wrap;
+}
+.collect-response-preview pre {
+  padding: 12px;
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  font:
+    13px/1.8 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.collect-response-preview > .muted {
+  margin-bottom: 0;
+}

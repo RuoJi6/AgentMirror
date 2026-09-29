@@ -1,0 +1,73 @@
+.agent-file-dropzone {
+  position: relative;
+  min-width: 0;
+  border-radius: 10px;
+}
+.agent-file-drop-hint {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  border: 2px dashed #2563eb;
+  border-radius: inherit;
+  background: rgba(239, 246, 255, 0.96);
+  color: #1d4ed8;
+  text-align: center;
+  pointer-events: none;
+}
+.agent-upload {
+  min-width: 0;
+  margin: 10px 0;
+}
+.agent-attachments,
+.agent-upload-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.agent-upload-actions {
+  margin-top: 6px;
+}
+.agent-upload-actions > span {
+  font-size: 12px;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.agent-attachment {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-size: 13px;
+  min-width: 0;
+}
+.agent-attachment > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.agent-attachment svg,
+.agent-attachment small {
+  flex-shrink: 0;
+}
+.agent-attachment small {
+  color: var(--muted);
+}
+.agent-attachment button {
+  display: inline-flex;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  padding: 2px;
+}

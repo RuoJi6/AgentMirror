@@ -1,0 +1,42 @@
+# Optional browser runtime; Dockerfile remains the standalone Go image.
+ARG NODE_IMAGE=node:22-bookworm-slim
+ARG GO_IMAGE=golang:1.27-alpine
+FROM ${NODE_IMAGE} AS web
+WORKDIR /src
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY frontend ./frontend
+COPY vite.config.js ./
+RUN npm run build:web
+
+FROM ${GO_IMAGE} AS backend
+WORKDIR /src
+COPY go.mod go.sum ./
+RUN go mod download
+COPY assets.go ./
+COPY cmd ./cmd
+COPY internal ./internal
+COPY --from=web /src/dist ./dist
+RUN CGO_ENABLED=0 go build -trimpath -ldflags='-s -w' -o /out/agentmirror ./cmd/agentmirror
+
+FROM ${NODE_IMAGE}
+ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright \
+    AGENTMIRROR_BROWSER_WORKER=/opt/agentmirror/scripts/browser-capture.mjs \
+    AGENTMIRROR_BROWSER_NODE=/usr/local/bin/node
+WORKDIR /opt/agentmirror
+COPY package.json package-lock.json ./
+# Playwright is intentionally retained from devDependencies for this runtime.
+RUN npm ci --include=dev \
+    && npx playwright install --with-deps chromium \
+    && npm cache clean --force \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /data \
+    && chown node:node /data
+COPY scripts/browser-capture.mjs ./scripts/browser-capture.mjs
+COPY --from=backend /out/agentmirror /agentmirror
+# Chromium keeps its sandbox. The host must permit sandbox user namespaces.
+USER node:node
+WORKDIR /data
+VOLUME ["/data"]
+ENTRYPOINT ["/agentmirror"]
+CMD ["--db", "/data/agentmirror-v2.sqlite3"]

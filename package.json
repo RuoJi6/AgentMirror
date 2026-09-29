@@ -1,0 +1,51 @@
+{
+  "name": "agentmirror",
+  "version": "4.20.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:web": "vite --host 127.0.0.1",
+    "test:dev": "node scripts/dev-smoke.mjs",
+    "build": "npm run build:web && npm run build:server",
+    "build:web": "vite build",
+    "build:server": "node scripts/build-go.mjs",
+    "start": "./bin/agentmirror",
+    "test": "go test . ./cmd/... ./internal/...",
+    "test:legacy": "python3 -m unittest discover -s tests -v",
+    "test:standalone": "node tests/standalone.mjs",
+    "test:browser": "node tests/browser.mjs",
+    "test:preview-browser": "node tests/preview-browser.mjs",
+    "test:agent-browser": "node tests/agent-browser.mjs",
+    "format": "prettier --write frontend/src frontend/index.html vite.config.js tests/browser.mjs",
+    "test:browser-capture": "node tests/browser-capture.mjs",
+    "test:parallel-agent-browser": "node tests/parallel-agent-browser.mjs",
+    "test:profile-diff": "node --test tests/profile-diff.mjs",
+    "test:live-prompts-browser": "node tests/live-prompts-browser.mjs",
+    "test:scenario-response": "node --test tests/scenario-response.mjs",
+    "test:scenario-response-browser": "node tests/scenario-response-browser.mjs",
+    "test:workspace-management-browser": "node tests/workspace-management-browser.mjs",
+    "test:model-options-browser": "node tests/model-options-browser.mjs",
+    "test:generation-transport-browser": "node tests/generation-transport-browser.mjs",
+    "test:material-tools-browser": "node tests/material-tools-browser.mjs",
+    "test:workspace-review-browser": "node tests/workspace-review-browser.mjs",
+    "test:streaming-browser": "node tests/streaming-browser.mjs",
+    "test:redteam-browser": "node tests/redteam-browser.mjs",
+    "test:resume-browser": "node tests/resume-browser.mjs",
+    "test:workspace-sites-browser": "node tests/workspace-sites-browser.mjs"
+  },
+  "dependencies": {
+    "@radix-ui/react-select": "2.3.7",
+    "@xyflow/react": "12.11.6",
+    "lucide-react": "0.544.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-markdown": "10.1.0",
+    "remark-gfm": "4.0.1"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1",
+    "prettier": "3.6.2",
+    "vite": "7.3.6"
+  }
+}

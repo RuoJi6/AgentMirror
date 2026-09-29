@@ -1,0 +1,140 @@
+name: Build executables
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+jobs:
+  checks:
+    name: Tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
+        with:
+          go-version-file: go.mod
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run build:web
+      - name: Go tests
+        run: go test -count=1 . ./cmd/... ./internal/...
+      - name: Frontend logic tests
+        run: >-
+          node --test tests/protocol.mjs tests/profile-diff.mjs
+          tests/scenario-response.mjs tests/access-flow-layout.mjs
+          tests/access-flow-summary.mjs tests/access-attack-flow.mjs
+
+  build:
+    name: Cross-compile five targets
+    needs: checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
+        with:
+          go-version-file: go.mod
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: bash scripts/build-release.sh
+      - name: Verify checksums
+        working-directory: release
+        run: sha256sum --check SHA256SUMS
+      - name: Upload executables
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: agentmirror-binaries
+          path: |
+            release/agentmirror-linux-amd64
+            release/agentmirror-linux-arm64
+            release/agentmirror-darwin-amd64
+            release/agentmirror-darwin-arm64
+            release/agentmirror-windows-amd64.exe
+            release/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 14
+
+  smoke:
+    name: Standalone startup (${{ matrix.platform }})
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: Linux x64
+            runner: ubuntu-24.04
+            binary: agentmirror-linux-amd64
+          - platform: Windows x64
+            runner: windows-2022
+            binary: agentmirror-windows-amd64.exe
+          - platform: macOS ARM64
+            runner: macos-15
+            binary: agentmirror-darwin-arm64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: '22'
+          package-manager-cache: false
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: agentmirror-binaries
+          path: release
+      - name: Test without Go, Node or Python on the server PATH
+        run: node tests/standalone.mjs
+        env:
+          AGENTMIRROR_SERVER: ${{ github.workspace }}/release/${{ matrix.binary }}
+
+  release:
+    name: Publish tagged release
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs: [build, smoke]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: agentmirror-binaries
+          path: release
+      - name: Verify release files
+        working-directory: release
+        run: sha256sum --check SHA256SUMS
+      - name: Publish executables and checksums
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" release/agentmirror-* release/SHA256SUMS --clobber
+          else
+            gh release create "$RELEASE_TAG" release/agentmirror-* release/SHA256SUMS \
+              --verify-tag --title "$RELEASE_TAG" --generate-notes
+          fi
