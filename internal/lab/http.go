@@ -19,7 +19,7 @@ import (
 	"unicode/utf8"
 )
 
-const Version = "0.0.2-go"
+const Version = "0.0.3-go"
 const maxBody = 256 * 1024
 
 type Options struct {
@@ -52,14 +52,14 @@ func New(opts Options) (app *App, err error) {
 	if opts.DBPath == "" {
 		opts.DBPath = "data/agentmirror-v2.sqlite3"
 	}
-	if opts.PublicURL == "" {
-		opts.PublicURL = "http://10.211.55.2:8765"
-	}
 	if opts.Host == "" {
 		opts.Host = "0.0.0.0"
 	}
 	if opts.PublicPort == 0 {
 		opts.PublicPort = 8765
+	}
+	if opts.PublicURL == "" {
+		opts.PublicURL = "http://" + net.JoinHostPort("127.0.0.1", fmtPort(opts.PublicPort))
 	}
 	if opts.AdminPort == 0 {
 		opts.AdminPort = 8766
@@ -605,7 +605,34 @@ func (a *App) publicRoute(w http.ResponseWriter, r *http.Request, listener Doc) 
 	fail(404, "页面不存在")
 }
 func (a *App) Banner() string {
-	return fmt.Sprintf("AgentMirror %s\n共 %d 个监听（管理后台由启动参数配置）\n管理端 %s\n公告地址 %s\n", Version, a.ListenerCount(), a.AdminURL(), a.PublicURL())
+	m := a.listeners
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	addresses := []string{}
+	inactive := 0
+	for _, listener := range m.listingLocked() {
+		if listener["status"] == "running" {
+			addresses = append(addresses, str(listener["public_url"]))
+		} else {
+			inactive++
+		}
+	}
+	adminCount := 0
+	if m.servers["admin"] != nil {
+		adminCount = 1
+	}
+	var output strings.Builder
+	fmt.Fprintf(&output, "AgentMirror %s\n监听状态 管理端 %d 个，蜜罐端口 %d 个\n管理端 %s\n", Version, adminCount, len(addresses), a.AdminURL())
+	if len(addresses) == 0 {
+		output.WriteString("公告地址 暂无（尚未启动蜜罐端口，请在管理台发布工作区并配置端口）\n")
+	}
+	for _, address := range addresses {
+		fmt.Fprintf(&output, "公告地址 %s\n", address)
+	}
+	if inactive > 0 {
+		fmt.Fprintf(&output, "另有 %d 个蜜罐端口未运行，请在管理台查看状态\n", inactive)
+	}
+	return output.String()
 }
 
 // JSON envelopes and plain text share the same authenticated receiver. The

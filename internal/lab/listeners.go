@@ -57,6 +57,12 @@ func (m *listenerManager) initialize(opts Options) {
 				fail(409, "管理后台启动失败：端口已被测试端口配置占用，请修改 --admin-port")
 			}
 		}
+		// Retire the old development-machine placeholder only for databases
+		// without any configured public listener. Preserve existing endpoints.
+		if count(q, "SELECT COUNT(*) FROM entities WHERE kind='listeners'") == 0 && str(set["public_url"]) == "http://10.211.55.2:8765" {
+			set["public_url"] = opts.PublicURL
+			putSettings(q, set)
+		}
 		syncDefault(q)
 	})
 }

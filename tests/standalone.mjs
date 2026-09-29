@@ -13,6 +13,7 @@ const filename = path.join(
   process.platform === "win32" ? "agentmirror.exe" : "agentmirror",
 );
 let server;
+let startupOutput = "";
 try {
   await copyFile(
     process.env.AGENTMIRROR_SERVER ||
@@ -59,12 +60,16 @@ try {
       reject(Error("standalone exited " + code));
     });
     server.stdout.on("data", (chunk) => {
-      if (chunk.toString().includes("公告地址")) {
+      startupOutput += chunk.toString();
+      if (startupOutput.includes("公告地址 暂无")) {
         clearTimeout(timer);
         resolve();
       }
     });
   });
+  assert(startupOutput.includes("管理端 1 个，蜜罐端口 0 个"));
+  assert(startupOutput.includes("公告地址 暂无"));
+  assert(!startupOutput.includes("10.211.55.2"));
   const base = `http://127.0.0.1:${port}`;
   assert.equal((await fetch(base + "/api/state")).status, 401);
   const authStatus = await (await fetch(base + "/api/auth/status")).json();
@@ -85,6 +90,7 @@ try {
   const headers = { Cookie: setup.headers.get("set-cookie").split(";")[0] };
   const state = await (await fetch(base + "/api/state", { headers })).json();
   assert.equal(state.runtime.backend, "go");
+  assert.equal(state.settings.public_url, "http://127.0.0.1:8765");
   assert.equal(state.deployments.length, 0);
   assert.equal(state.listeners.length, 0);
   assert.equal(state.profiles.length, 12);
