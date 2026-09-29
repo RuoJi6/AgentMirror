@@ -86,6 +86,13 @@ try {
   const state = await (await fetch(base + "/api/state", { headers })).json();
   assert.equal(state.runtime.backend, "go");
   assert.equal(state.deployments.length, 0);
+  assert.equal(state.listeners.length, 0);
+  assert.equal(state.profiles.length, 12);
+  assert.equal(state.workspaces.length, 12);
+  assert(state.workspaces.every((workspace) => workspace.publication_status === "draft"));
+  for (const obsolete of ["observe", "receipt", "environment", "custom"]) {
+    assert(!state.profiles.some((profile) => profile.id === obsolete));
+  }
   const html = await (await fetch(base)).text();
   const asset = html.match(/src="([^"]+\.js)"/)[1];
   const script = await fetch(base + asset);
@@ -94,6 +101,9 @@ try {
   const library = await (
     await fetch(base + "/api/composer/state", { headers })
   ).json();
+  assert.equal(library.sites.length, 12);
+  assert.equal(library.scenarios.length, 12);
+  assert(library.sites.every((site) => site.files.every((file) => file.encoding !== "hosted")));
   const preview = await fetch(base + "/api/sites/preview", {
     method: "POST",
     headers: {
@@ -114,7 +124,7 @@ try {
     [path.basename(filename), "data"].sort(),
   );
   console.log(
-    "PASS standalone Go binary serves administration and workspace previews with empty PATH, outside the checkout",
+    "PASS standalone Go binary serves administration and workspace previews with 12 built-in workspaces and prompts, empty PATH, outside the checkout",
   );
 } finally {
   if (server && server.exitCode === null) {

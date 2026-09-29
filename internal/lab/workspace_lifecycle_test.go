@@ -263,6 +263,7 @@ func TestLegacyTemplateMigrationPreservesOriginalsAndNeverRecreatesDeletedSites(
 	if err != nil {
 		t.Fatal(err)
 	}
+	resetAuthoringTestFixtures(s)
 	if len(listing(s.db, "templates")) != 0 || len(listing(s.db, "sites")) != 0 {
 		t.Fatal("fresh database seeded legacy templates or migrations")
 	}

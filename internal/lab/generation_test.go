@@ -19,6 +19,7 @@ func generationTestApp(t *testing.T) *App {
 	if err != nil {
 		t.Fatal(err)
 	}
+	resetAuthoringTestFixtures(s)
 	a := &App{store: s}
 	a.generationManager()
 	t.Cleanup(func() { a.closeGeneration(); s.db.Close() })

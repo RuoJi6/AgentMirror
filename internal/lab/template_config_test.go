@@ -15,6 +15,7 @@ func templateStore(t *testing.T) *Store {
 		t.Fatal(err)
 	}
 	t.Cleanup(func() { s.db.Close() })
+	resetAuthoringTestFixtures(s)
 	seedLegacyTemplates(s)
 	return s
 }

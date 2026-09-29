@@ -16,6 +16,7 @@ RUN go mod download
 COPY assets.go ./
 COPY cmd ./cmd
 COPY internal ./internal
+COPY examples/evaluated-scenarios ./examples/evaluated-scenarios
 COPY --from=web /src/dist ./dist
 RUN CGO_ENABLED=0 go build -trimpath -ldflags='-s -w' -o /out/agentmirror ./cmd/agentmirror && mkdir -p /out/data
 

@@ -20,7 +20,7 @@ AgentMirror 使用 Go 后端、纯 Go SQLite 驱动和 React/Vite 前端。发�
 
 工作流先运行 Go 测试与前端逻辑测试，再使用 `CGO_ENABLED=0` 交叉编译。Linux x64、Windows x64、macOS ARM64 分别在对应系统的 GitHub runner 上验证启动、管理员初始化、SQLite 读写、内嵌页面及静态资源。Linux ARM64 和 macOS Intel 验证交叉编译，当前没有单独的原生启动检查。
 
-构建产物只包含上述文件，不携带运行数据库、模型配置、账户信息或评测日志。Go 程序会包含源码中的默认资源和内置 Agent 指令；`prompts/` 下的参考文档与导出示例属于源码材料，不会自动导入运行数据库。
+构建产物只包含上述文件，不携带运行数据库、模型配置、账户信息或评测日志。Go 程序会包含源码中的默认资源和内置 Agent 指令；`examples/evaluated-scenarios/` 中的 12 个已测场景及提示词从 v0.0.2 起随程序内嵌，首次启动和升级时一次性导入为工作区草稿；不包含下载附件，不自动开启监听。`prompts/` 下其他参考文档不会自动导入。
 
 ## 下载后启动
 

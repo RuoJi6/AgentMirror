@@ -1,3 +1,4 @@
+import { clearBuiltinTestMaterials } from "./authoring-fixture.mjs";
 import assert from "node:assert/strict";
 import http from "node:http";
 import net from "node:net";
@@ -586,6 +587,7 @@ try {
     },
   });
   assert.equal(setup.status(), 200);
+  await clearBuiltinTestMaterials(context.request, admin);
   const state = await (await context.request.get(admin + "/api/state")).json();
   const settings = await context.request.post(
     admin + "/api/generation/settings",

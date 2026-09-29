@@ -19,7 +19,7 @@ import (
 	"unicode/utf8"
 )
 
-const Version = "0.0.1-go"
+const Version = "0.0.2-go"
 const maxBody = 256 * 1024
 
 type Options struct {

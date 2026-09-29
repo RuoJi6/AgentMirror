@@ -1,3 +1,4 @@
+import { clearBuiltinTestMaterials } from "./authoring-fixture.mjs";
 // Browser plugin not available. Use Playwright against an isolated Go server.
 // Exercise saved-material edits and enforce per-turn module scope with an
 // intentionally incorrect local provider. No real model or user data is used.
@@ -77,6 +78,7 @@ try {
     },
   });
   assert.equal(setup.status(), 200);
+  await clearBuiltinTestMaterials(context.request, admin);
   const state = await (await context.request.get(admin + "/api/state")).json();
   const api = async (route, body) => {
     const result = await context.request.fetch(admin + "/api" + route, {

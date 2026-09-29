@@ -1,3 +1,4 @@
+import { clearBuiltinTestMaterials } from "./authoring-fixture.mjs";
 import { chromium } from "playwright";
 import assert from "node:assert/strict";
 import { mkdtemp, rm, mkdir, readFile } from "node:fs/promises";
@@ -131,6 +132,7 @@ try {
     .getByRole("button", { name: "创建管理员并进入后台", exact: true })
     .click();
   await page.getByRole("heading", { name: "总览", exact: true }).waitFor();
+  await clearBuiltinTestMaterials(context.request, admin);
   await page.reload();
   await page.getByRole("heading", { name: "总览", exact: true }).waitFor();
   const extraContext = await browser.newContext({

@@ -65,17 +65,9 @@ func openStore(path, initialURL string) (store *Store, err error) {
 			return
 		}
 		exec(q, "INSERT INTO settings VALUES(1,?)", dump(Doc{"public_url": publicURL(initialURL), "default_deployment": nil}))
-		// New installations author sites and workspaces. Legacy templates are
-		// retained only when upgrading an existing database.
-		for _, raw := range array(defaults["profiles"]) {
-			item := clone(object(raw))
-			item["created_at"] = timestamp()
-			item["updated_at"] = item["created_at"]
-			item["version"] = 1
-			exec(q, "INSERT INTO versions VALUES(?,?,?)", item["id"], 1, dump(item))
-			put(q, "profiles", item)
-		}
+
 	})
+	store.seedEvaluatedScenarios()
 	store.migrateLegacyTemplates()
 	store.reconcileSavedMaterials()
 	return store, nil

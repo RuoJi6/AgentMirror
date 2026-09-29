@@ -42,6 +42,9 @@ func newLab(t *testing.T) *testLab {
 	return b
 }
 func newUnauthedLab(t *testing.T) *testLab {
+	return newTestLab(t, true)
+}
+func newTestLab(t *testing.T, authoringFixtures bool) *testLab {
 	t.Helper()
 	b := &testLab{t: t, ports: map[int]bool{}}
 	b.opts = Options{DBPath: filepath.Join(t.TempDir(), "lab.sqlite3"), AdminPort: b.port(), Frontend: fstest.MapFS{"index.html": &fstest.MapFile{Data: []byte("<!doctype html><title>Embedded administration</title>")}, "assets/app.js": &fstest.MapFile{Data: []byte("/* bundled frontend */")}}}
@@ -49,6 +52,9 @@ func newUnauthedLab(t *testing.T) *testLab {
 	b.app, err = New(b.opts)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if authoringFixtures {
+		resetAuthoringTestFixtures(b.app.store)
 	}
 	b.admin = b.app.AdminURL()
 	transport := &http.Transport{Proxy: nil}
@@ -179,12 +185,13 @@ func expectStatus(t *testing.T, r reply, status int) {
 }
 
 func TestFreshDatabaseAndEmbeddedFrontend(t *testing.T) {
-	b := newLab(t)
+	b := newTestLab(t, false)
+	b.authenticate(true)
 	state := b.api("/state", "GET", nil, 200)
 	if len(array(state["deployments"])) != 0 || len(array(state["listeners"])) != 0 {
 		t.Fatal("fresh database should only start management")
 	}
-	if object(state["runtime"])["backend"] != "go" || len(array(state["profiles"])) != 4 {
+	if object(state["runtime"])["backend"] != "go" || len(array(state["profiles"])) != 12 || len(array(state["workspaces"])) != 12 {
 		t.Fatal("wrong initial state")
 	}
 	for _, p := range []string{"/", "/deployments", "/assets/app.js"} {
@@ -638,8 +645,17 @@ func TestPythonDatabaseCompatibility(t *testing.T) {
 	b.authenticate(true)
 	state := b.api("/state", "GET", nil, 200)
 	for _, key := range []string{"templates", "profiles", "deployments"} {
-		if !reflect.DeepEqual(array(listing(b.app.store.db, key)), expected[key]) {
-			t.Fatalf("Python %s changed during migration", key)
+		for _, item := range array(expected[key]) {
+			id := str(object(item)["id"])
+			actual := entityMaybe(b.app.store.db, key, id)
+			// Unused original defaults may be retired by the builtin migration;
+			// the edited receipt profile and its history must remain identical.
+			if key == "profiles" && actual == nil && (id == "observe" || id == "environment" || id == "custom") {
+				continue
+			}
+			if !reflect.DeepEqual(actual, object(item)) {
+				t.Fatalf("Python %s/%s changed during migration", key, id)
+			}
 		}
 	}
 	if state["templates"] != nil || len(array(state["deployments"])) != 0 || len(array(state["legacy_deployments"])) != len(array(expected["deployments"])) {
