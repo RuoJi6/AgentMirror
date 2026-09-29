@@ -35,7 +35,12 @@ func openStore(path, initialURL string) (store *Store, err error) {
 	path, err = filepath.Abs(path)
 	check(err)
 	check(os.MkdirAll(filepath.Dir(path), 0700))
-	u := url.URL{Scheme: "file", Path: path}
+	// SQLite file URIs require forward slashes and / before a Windows drive.
+	uriPath := filepath.ToSlash(path)
+	if len(uriPath) >= 2 && uriPath[1] == ':' {
+		uriPath = "/" + uriPath
+	}
+	u := url.URL{Scheme: "file", Path: uriPath}
 	params := url.Values{"_pragma": {"foreign_keys(1)", "busy_timeout(15000)", "journal_mode(WAL)"}, "_txlock": {"immediate"}}
 	u.RawQuery = params.Encode()
 	db, err := sql.Open("sqlite", u.String())

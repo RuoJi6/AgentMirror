@@ -7,7 +7,7 @@ import net from "node:net";
 import os from "node:os";
 import path from "node:path";
 const root = path.resolve(import.meta.dirname, "..");
-const temp = await mkdtemp(path.join(os.tmpdir(), "agentmirror-standalone-"));
+const temp = await mkdtemp(path.join(os.tmpdir(), "agentmirror standalone-"));
 const filename = path.join(
   temp,
   process.platform === "win32" ? "agentmirror.exe" : "agentmirror",
@@ -35,7 +35,7 @@ try {
       "--admin-port",
       String(port),
       "--db",
-      path.join(temp, "data", "lab.sqlite3"),
+      path.join(temp, "data", "数据库 # 100%.sqlite3"),
     ],
     {
       cwd: temp,
@@ -45,7 +45,7 @@ try {
           ? { SystemRoot: process.env.SystemRoot }
           : {}),
       },
-      stdio: ["ignore", "pipe", "pipe"],
+      stdio: ["ignore", "pipe", "inherit"],
     },
   );
   await new Promise((resolve, reject) => {
