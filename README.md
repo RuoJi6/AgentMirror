@@ -24,12 +24,39 @@ npm run build
 ./bin/agentmirror
 ```
 
-Windows 使用 `.\bin\agentmirror.exe`。打开 `http://127.0.0.1:8766` 并创建管理员账号；新安装不自动发布测试站点。常规运行无需 Go、Node 或 Python。动态页面克隆与浏览器核查是可选能力，需要额外安装 Node、Playwright、Chromium 和浏览器 worker。
+Windows 使用 `.\bin\agentmirror.exe`。默认监听 `0.0.0.0:8766`；本机打开 `http://127.0.0.1:8766`，远程打开 `http://<服务器IP>:8766` 并创建管理员账号；新安装不自动发布测试站点。常规运行无需 Go、Node 或 Python。动态页面克隆与浏览器核查是可选能力，需要额外安装 Node、Playwright、Chromium 和浏览器 worker。
 
 - [构建、下载与自动发布](docs/BUILDING.md)：Linux x64/ARM64、Windows x64、macOS Intel/Apple Silicon。
 - [蜜罐工作区指南](docs/COMPOSER_GUIDE.md) · [开发指南](docs/DEVELOPMENT.md) · [部署架构](docs/DEPLOYMENT_ARCHITECTURE.md)。
 - [12 个实际评测场景及配套提示词](examples/evaluated-scenarios/README.md)：仅整理已使用的冻结场景，原部署地址已替换为示例地址。
 - [提示词参考文件](prompts/) · [第三方声明](docs/THIRD_PARTY_NOTICES.md)。
+
+### 远程管理与指定地址
+
+自 v0.0.4 起，管理端默认监听 `0.0.0.0:8766`，可从其他机器访问 `http://<服务器IP>:8766`，本机仍可使用 `http://127.0.0.1:8766`。新安装通过该地址设置管理员，已有安装继续使用原账号。服务器需允许管理端口入站。
+
+```sh
+# 默认允许通过服务器 IPv4 地址远程访问
+./agentmirror --admin-port 8766
+
+# 仅绑定指定网卡的本机 IPv4 地址
+./agentmirror --admin-host 192.168.1.10 --admin-port 8766
+
+# 仅允许本机连接（也适用于 SSH 转发）
+./agentmirror --admin-host 127.0.0.1
+
+# 通过域名或 NAT 映射后的地址访问，保留实际外部端口
+./agentmirror --admin-origin http://admin.example.com:8766 \
+  --admin-origin http://203.0.113.10:18766
+
+# HTTPS 反向代理：代理保留外部 Host，转发到本机 8766
+./agentmirror --admin-host 127.0.0.1 \
+  --admin-origin https://admin.example.com
+```
+
+命令中的 `agentmirror` 替换为实际下载的文件名或 `./bin/agentmirror`。`--admin-host` 指服务器本机的监听地址，不是客户端 IP；`0.0.0.0` 代表所有 IPv4 网卡。`--admin-origin` 可重复，只接受完整的 `http://主机[:端口]` 或 `https://主机[:端口]`，不接受路径、通配符、账号或查询参数。直接访问服务器 IP 无需设置此参数；域名、NAT 外部地址与实际监听地址不同时需要显式指定，避免被 Host 校验拒绝。
+
+HTTPS 代理需保留原始 `Host`（包含非默认外部端口），并在此配置对应的 HTTPS origin；登录 Cookie 会设置 `Secure`。程序不信任客户端提交的 `Forwarded` / `X-Forwarded-*`。管理员登录、会话令牌和同源写入校验始终启用。管理监听和允许地址只从启动参数读取，修改后重启；已有 Docker/systemd 部署若仍显式使用 `--admin-host 127.0.0.1`，需相应调整启动配置。
 
 ## 结果占位符与回传
 

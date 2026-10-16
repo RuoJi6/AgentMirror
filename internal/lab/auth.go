@@ -102,7 +102,7 @@ func (a *App) writeAdminCookie(w http.ResponseWriter, r *http.Request, token str
 	if token == "" {
 		age = -1
 	}
-	http.SetCookie(w, &http.Cookie{Name: a.adminCookieName(), Value: token, Path: "/api", HttpOnly: true, SameSite: http.SameSiteStrictMode, Secure: r.TLS != nil, MaxAge: age, Expires: expires})
+	http.SetCookie(w, &http.Cookie{Name: a.adminCookieName(), Value: token, Path: "/api", HttpOnly: true, SameSite: http.SameSiteStrictMode, Secure: a.adminAccess.secure(r), MaxAge: age, Expires: expires})
 }
 func newSessionValues() (token, csrf string, expires int64) {
 	return randomToken(32), randomToken(32), time.Now().Add(adminSessionTTL).Unix()

@@ -805,7 +805,7 @@ func TestManagementStartupConfigurationAndLegacyUpgrade(t *testing.T) {
 	// Clearing the host option restores its default rather than reading the DB.
 	b.opts.AdminHost = ""
 	b.restart()
-	if b.app.listeners.runtime()["admin_host"] != "127.0.0.1" {
+	if b.app.listeners.runtime()["admin_host"] != "0.0.0.0" {
 		t.Fatal("management host persisted across startup options")
 	}
 }
@@ -822,6 +822,9 @@ func TestManagementStartupValidation(t *testing.T) {
 			t.Fatal("invalid management host accepted", host)
 		}
 	}
+	// Check conflicts on the explicitly selected interface. Some systems allow
+	// a wildcard socket and an interface-specific socket to share a port.
+	b.opts.AdminHost = "127.0.0.1"
 	occupied, err := net.Listen("tcp4", "127.0.0.1:"+fmtPort(b.opts.AdminPort))
 	if err != nil {
 		t.Fatal(err)

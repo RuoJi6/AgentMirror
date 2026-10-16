@@ -88,7 +88,7 @@ HTTP 预演与公开请求共用匹配和渲染逻辑，预演不创建会话。
 
 数据库默认名称保持 `agentmirror-v2.sqlite3`。保留 `entities`、`versions`、`settings`、`sessions`、`events`、`reports` 等已有表，不重建或自动清空历史数据。工作区、站点、场景和不可变素材版本使用 `entities` 的不同类别；发布记录保存固定规则与站点版本引用。管理员凭据与生成模型密钥使用各自的独立表，业务导出不包含这些密钥。
 
-新库不创建工作区、发布记录或公开测试入口。管理监听只由 `--admin-host` / `--admin-port` 创建，不写入测试端口列表。已有数据库中的旧单页模板自动转换为独立静态站点素材，供工作区复用；原模板记录保留，迁移记录防止删除后的素材再次生成。旧部署不会自动迁移为工作区，也不会把迁移素材自动发布。所有 `/api/templates`、`/api/deployments`、`/api/preview` 及其子路径在管理员鉴权后返回 410；当前接口见 [工作区指南](COMPOSER_GUIDE.md)。
+新库不创建工作区、发布记录或公开测试入口。管理监听只由 `--admin-host` / `--admin-port` 创建，默认 `0.0.0.0:8766`；外部访问地址由可重复的 `--admin-origin` 指定，不写入测试端口列表。已有数据库中的旧单页模板自动转换为独立静态站点素材，供工作区复用；原模板记录保留，迁移记录防止删除后的素材再次生成。旧部署不会自动迁移为工作区，也不会把迁移素材自动发布。所有 `/api/templates`、`/api/deployments`、`/api/preview` 及其子路径在管理员鉴权后返回 410；当前接口见 [工作区指南](COMPOSER_GUIDE.md)。
 
 `/api/state` 的 `deployments` 只返回组合发布结果，旧记录放入 `legacy_deployments`，不再返回 `templates/carriers/surfaces`。已有旧部署端口可以保留并启停或删除；新建或改绑端口仅接受组合发布结果。历史会话及其版本、事件、回传和快照继续读取，旧记录不强制改成新的工作区结构。兼容读取旧数据库不表示旧 Python 程序能理解新增工作区及其发布记录。旧 SQL/JSON 样本位于 `internal/lab/testdata/`，用于核对历史记录兼容性，样本均为合成数据。
 
@@ -142,7 +142,7 @@ docker run --rm --init --network host \
 
 现有 `compose.yaml` 默认构建纯 Go 镜像。使用浏览器镜像时，把该服务的 `build: .` 改为 `build: {context: ., dockerfile: Dockerfile.browser}`，并添加 `init: true`；原监听参数与持久卷配置继续适用，已有卷须匹配上述运行用户权限。
 
-提供的 Compose 使用 **Linux host network**，应用新增端口可以直接监听宿主机，无需每次重建端口映射。管理端默认使用宿主机回环地址，远程管理可使用 SSH 转发；Compose `command` 显式设置管理监听参数。Docker Desktop 需要支持并启用 host network；本地开发可直接使用原生程序。
+提供的 Compose 使用 **Linux host network**，应用新增端口可以直接监听宿主机，无需每次重建端口映射。管理端默认监听宿主机所有 IPv4 网卡，可通过服务器 IP 远程访问；需要限制网卡时使用 `--admin-host`，域名/NAT/HTTPS 代理使用 `--admin-origin`（见[远程管理配置](BUILDING.md#远程管理与指定地址)）。Compose `command` 显式设置管理监听参数。Docker Desktop 需要支持并启用 host network；本地开发可直接使用原生程序。
 
 如改为 bridge，容器内需指定 `--admin-host 0.0.0.0`，同时明确发布管理及测试端口。新增测试端口仍需同步映射。Docker/systemd 文件属于部署模板，实际目标环境需单独验证。
 

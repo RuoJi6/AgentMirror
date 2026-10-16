@@ -15,8 +15,12 @@ func main() {
 	flag.StringVar(&opts.DBPath, "db", "data/agentmirror-v2.sqlite3", "SQLite data file")
 	flag.StringVar(&opts.Host, "host", "0.0.0.0", "Initial legacy public bind address")
 	flag.IntVar(&opts.PublicPort, "public-port", 8765, "Initial legacy public port; new databases start without public listeners")
-	flag.StringVar(&opts.AdminHost, "admin-host", "127.0.0.1", "Management IPv4 bind address; configured only at startup")
+	flag.StringVar(&opts.AdminHost, "admin-host", "0.0.0.0", "Management IPv4 bind address (0.0.0.0 allows remote access; 127.0.0.1 is local only)")
 	flag.IntVar(&opts.AdminPort, "admin-port", 8766, "Management port; configured only at startup")
+	flag.Func("admin-origin", "Allowed external management origin, e.g. https://admin.example.com; repeat for multiple origins", func(value string) error {
+		opts.AdminOrigins = append(opts.AdminOrigins, value)
+		return nil
+	})
 	flag.StringVar(&opts.PublicURL, "public-url", "", "Initial legacy advertised URL (default http://127.0.0.1:<public-port>); does not start a public listener")
 	version := flag.Bool("version", false, "Print version and exit")
 	flag.Parse()

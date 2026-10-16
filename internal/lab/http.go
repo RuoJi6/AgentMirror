@@ -19,12 +19,13 @@ import (
 	"unicode/utf8"
 )
 
-const Version = "0.0.3-go"
+const Version = "0.0.4-go"
 const maxBody = 256 * 1024
 
 type Options struct {
 	DBPath, PublicURL, Host string
 	AdminHost               string
+	AdminOrigins            []string
 	PublicPort, AdminPort   int
 	Frontend                fs.FS
 }
@@ -33,6 +34,7 @@ type App struct {
 	listeners      *listenerManager
 	csrf           string
 	auth           *adminAuth
+	adminAccess    adminAccess
 	frontend       fs.FS
 	closeOnce      sync.Once
 	generationOnce sync.Once
@@ -65,7 +67,7 @@ func New(opts Options) (app *App, err error) {
 		opts.AdminPort = 8766
 	}
 	if opts.AdminHost == "" {
-		opts.AdminHost = "127.0.0.1"
+		opts.AdminHost = "0.0.0.0"
 	}
 	if ip := net.ParseIP(opts.AdminHost); ip == nil || ip.To4() == nil || strings.Contains(opts.AdminHost, ":") {
 		fail(400, "管理后台监听地址需为 IPv4 地址")
@@ -73,11 +75,15 @@ func New(opts Options) (app *App, err error) {
 	if opts.AdminPort < 1 || opts.AdminPort > 65535 || opts.PublicPort < 1 || opts.PublicPort > 65535 {
 		fail(400, "端口必须是 1–65535 的整数")
 	}
+	access, err := newAdminAccess(opts.AdminOrigins)
+	if err != nil {
+		return nil, err
+	}
 	store, err := openStore(opts.DBPath, opts.PublicURL)
 	if err != nil {
 		return nil, err
 	}
-	app = &App{store: store, csrf: randomToken(32), auth: newAdminAuth(), frontend: opts.Frontend}
+	app = &App{store: store, csrf: randomToken(32), auth: newAdminAuth(), adminAccess: access, frontend: opts.Frontend}
 	store.initAdminAuth()
 	app.listeners = &listenerManager{app: app, servers: map[string]*runningServer{}, errors: map[string]string{}}
 	app.listeners.initialize(opts)
@@ -198,20 +204,12 @@ func (a *App) handler(admin bool, listenerID string, port int) http.Handler {
 			if strings.HasPrefix(r.URL.Path, "//") {
 				fail(404, "路径不存在")
 			}
-			allowed := func(host string) bool {
-				local, ok := r.Context().Value(http.LocalAddrContextKey).(*net.TCPAddr)
-				if !ok {
-					return false
-				}
-				return host == net.JoinHostPort(local.IP.String(), fmtPort(port)) ||
-					(local.IP.IsLoopback() && host == "localhost:"+fmtPort(port))
-			}
-			if !allowed(r.Host) {
-				fail(403, "管理台仅接受当前监听地址")
+			if !a.adminAccess.allowsHost(r, port) {
+				fail(403, "管理台仅接受当前监听地址或 --admin-origin 指定的地址")
 			}
 			if r.Method != "GET" && r.Method != "HEAD" {
 				origin := r.Header.Get("Origin")
-				if origin != "" && origin != "http://"+r.Host {
+				if origin != "" && !a.adminAccess.sameOrigin(r, origin) {
 					fail(403, "请求来源不允许")
 				}
 			}
@@ -623,6 +621,13 @@ func (a *App) Banner() string {
 	}
 	var output strings.Builder
 	fmt.Fprintf(&output, "AgentMirror %s\n监听状态 管理端 %d 个，蜜罐端口 %d 个\n管理端 %s\n", Version, adminCount, len(addresses), a.AdminURL())
+	fmt.Fprintf(&output, "管理监听 %s（通过 --admin-host / --admin-port 配置）\n", net.JoinHostPort(str(m.admin["host"]), fmtPort(integer(m.admin["port"]))))
+	if m.admin["host"] == "0.0.0.0" {
+		fmt.Fprintf(&output, "远程管理 http://<服务器IP>:%d（域名或 NAT 地址使用 --admin-origin 指定）\n", integer(m.admin["port"]))
+	}
+	for _, origin := range a.adminAccess.origins {
+		fmt.Fprintf(&output, "管理外部地址 %s\n", origin)
+	}
 	if len(addresses) == 0 {
 		output.WriteString("公告地址 暂无（尚未启动蜜罐端口，请在管理台发布工作区并配置端口）\n")
 	}

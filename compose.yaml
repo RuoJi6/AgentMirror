@@ -1,10 +1,11 @@
 # Linux host networking lets newly configured listeners bind host ports directly.
-# Management remains on host loopback. No fixed Docker port publication is used.
+# Management accepts remote IPv4 connections; set --admin-host to restrict interfaces.
+# No fixed Docker port publication is used.
 services:
   agentmirror:
     build: .
     network_mode: host
-    command: ["--admin-host", "127.0.0.1", "--admin-port", "8766", "--db", "/data/agentmirror-v2.sqlite3"]
+    command: ["--admin-host", "0.0.0.0", "--admin-port", "8766", "--db", "/data/agentmirror-v2.sqlite3"]
     restart: unless-stopped
     volumes:
       - agentmirror-data:/data
