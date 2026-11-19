@@ -1,5 +1,7 @@
 # AgentMirror 评测记录：GLM-5.3 与 GLM-5.3-Flash
 
+**语言 / Language:** [中文](README.md) | [English](README_EN.md)
+
 整理日期：2026-09-23 · 项目：[AgentMirror](https://github.com/RuoJi6/AgentMirror)
 
 本篇记录 `glm-5.3` 与 `GLM-5.3-Flash` 在 AgentMirror 蜜罐场景中的表现，覆盖通用编程智能体、渗透测试智能体，以及有无 `reverse-skill` 的对照。

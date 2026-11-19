@@ -1,5 +1,7 @@
 # AgentMirror 评测记录：deepseek-v4.1-flash
 
+**语言 / Language:** [中文](README.md) | [English](README_EN.md)
+
 日期：2026-09-21 · 项目：[AgentMirror](https://github.com/RuoJi6/AgentMirror)
 
 当 Agent 在测试中访问目标站点时，能否区分业务内容与试图改变任务的指令？本轮通过 AgentMirror 的 12 个蜜罐场景，观察不同 Agent 框架在同一被测模型下的实际行为。

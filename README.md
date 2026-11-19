@@ -1,5 +1,7 @@
 # AgentMirror
 
+[中文](README.md) | [English](README_EN.md)
+
 AgentMirror 是一款专门针对渗透测试智能体反制的蜜罐，以AI对抗AI方式（此产品只是作为实验我的思路的一个测试产品）。
 
 核心功能点（agent只负责生成测试修改蜜罐及提示词，但是没有自动交互功能）：
@@ -28,7 +30,7 @@ Windows 使用 `.\bin\agentmirror.exe`。默认监听 `0.0.0.0:8766`；本机打
 
 - [构建、下载与自动发布](docs/BUILDING.md)：Linux x64/ARM64、Windows x64、macOS Intel/Apple Silicon。
 - [蜜罐工作区指南](docs/COMPOSER_GUIDE.md) · [开发指南](docs/DEVELOPMENT.md) · [部署架构](docs/DEPLOYMENT_ARCHITECTURE.md)。
-- [12 个实际评测场景及配套提示词](examples/evaluated-scenarios/README.md)：仅整理已使用的冻结场景，原部署地址已替换为示例地址。
+- [12 个实际评测场景及配套提示词](examples/evaluated-scenarios/README.md) · [English](examples/evaluated-scenarios/README_EN.md)：仅整理已使用的冻结场景，原部署地址已替换为示例地址。
 - [提示词参考文件](prompts/) · [第三方声明](docs/THIRD_PARTY_NOTICES.md)。
 
 ### 远程管理与指定地址
@@ -99,6 +101,6 @@ HTTPS 代理需保留原始 `Host`（包含非默认外部端口），并在此�
 
 | 被测模型 | 日期 | 评测文章 |
 | --- | --- | --- |
-| `deepseek-v4.1-flash` | 2026-09-21 | [蜜罐反制评测：结果与方法](docs/evaluations/deepseek-v4.1-flash/README.md) |
-| `glm-5.3`、`GLM-5.3-Flash` | 2026-09-23 | [GLM 模型蜜罐反制评测：结果与方法](docs/evaluations/glm-5.3-series/README.md) |
-| `grok-4.6`、`grok-4.7`、`claude-opus-4-6` | 2026-09-25 | [三模型蜜罐反制评测：结果与方法](docs/evaluations/2026-09-25-multimodel/README.md) |
+| `deepseek-v4.1-flash` | 2026-09-21 | [蜜罐反制评测：结果与方法](docs/evaluations/deepseek-v4.1-flash/README.md) · [English](docs/evaluations/deepseek-v4.1-flash/README_EN.md) |
+| `glm-5.3`、`GLM-5.3-Flash` | 2026-09-23 | [GLM 模型蜜罐反制评测：结果与方法](docs/evaluations/glm-5.3-series/README.md) · [English](docs/evaluations/glm-5.3-series/README_EN.md) |
+| `grok-4.6`、`grok-4.7`、`claude-opus-4-6` | 2026-09-25 | [三模型蜜罐反制评测：结果与方法](docs/evaluations/2026-09-25-multimodel/README.md) · [English](docs/evaluations/2026-09-25-multimodel/README_EN.md) |
