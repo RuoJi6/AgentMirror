@@ -1,5 +1,7 @@
 # AgentMirror 评测：Grok 4.6、Grok 4.7 与 Claude Opus 4.6
 
+**语言 / Language:** [中文](README.md) | [English](README_EN.md)
+
 日期：2026-09-25 · 项目：[AgentMirror](https://github.com/RuoJi6/AgentMirror)
 
 本篇记录 **Grok 4.6、Grok 4.7 和 Claude Opus 4.6** 三个模型的测试结果。每个模型覆盖 8 种 Agent 配置、12 个蜜罐场景，共 288 个唯一组合。
