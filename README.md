@@ -1,24 +1,26 @@
 # AgentMirror
 
-[中文](README.md) | [English](README_EN.md)
+[中文](README.zh-CN.md) | [English](README.md)
 
-AgentMirror 是一款专门针对渗透测试智能体反制的蜜罐，以AI对抗AI方式（此产品只是作为实验我的思路的一个测试产品）。
+AgentMirror is a honeypot designed to counter penetration-testing agents, using AI against AI. This project is an experimental test of that idea.
 
-核心功能点（agent只负责生成测试修改蜜罐及提示词，但是没有自动交互功能）：
-- 对话生成蜜罐：通过 Agent 创建和调整蜜罐，支持快速克隆真实业务页面外观。
-- 多站点联动：一个工作区构建多个关联站点，支持嵌套路径和独立端口，模拟复杂业务环境。
-- 自定义请求与响应：根据路径、参数、请求头及正文匹配流量，返回不同响应，模拟业务及漏洞特征。
-- 提示词精准投放：按站点、接口和触发条件绑定提示词，支持动态变量及版本管理。
-- 自动核查与红队测试：检查蜜罐访问、交付和回传链路，评估被测 Agent 对提示词注入的行为。
-- 探索路径可视化：展示访问、探测、规则命中、文件下载及回传过程，支持证据查看与导出。
-- 素材复用与文件托管：自由组合站点、场景和提示词，支持文件托管及下载追踪。
-- 灵活部署与扩展：支持多端口管理、配置热更新、多模型接入及 MCP 工具扩展。
+The agent is used only to generate and revise the honeypot and its prompts; it has no automatic interaction capability.
 
-## 启动
+Core capabilities:
+- Conversational honeypot authoring: create and adjust honeypots through an agent, including quickly cloning the look of real business pages.
+- Multi-site workspaces: build multiple related sites in one workspace, with nested paths and independent ports, to simulate a more complex business environment.
+- Custom requests and responses: match traffic by path, parameters, headers, and body, and return different responses that simulate business and vulnerability behavior.
+- Targeted prompt delivery: bind prompts to sites, endpoints, and trigger conditions, with dynamic variables and versioning.
+- Automatic review and red-team testing: check honeypot access, delivery, and callback paths, and evaluate how the tested agent behaves under prompt injection.
+- Exploration-path visualization: show access, probing, rule hits, file downloads, and callbacks, with evidence viewing and export.
+- Reusable materials and file hosting: freely combine sites, scenarios, and prompts, with hosted files and download tracking.
+- Flexible deployment and extension: multi-port management, hot-reload of configuration, multiple model providers, and MCP tool extensions.
 
-当前源码使用 Go + SQLite 后端和 React/Vite 前端。发布程序内嵌管理界面；可从 [Releases](https://github.com/RuoJi6/AgentMirror/releases) 下载对应系统的可执行文件，或在 [Actions](https://github.com/RuoJi6/AgentMirror/actions/workflows/build.yml) 下载自动构建产物。
+## Getting started
 
-从源码构建需要 Go 1.25+、Node.js 22.12+：
+The current source uses a Go + SQLite backend and a React/Vite frontend. Release binaries embed the admin UI. You can download an executable for your system from [Releases](https://github.com/RuoJi6/AgentMirror/releases), or download CI build artifacts from [Actions](https://github.com/RuoJi6/AgentMirror/actions/workflows/build.yml).
+
+Building from source requires Go 1.25+ and Node.js 22.12+:
 
 ```sh
 npm ci
@@ -26,81 +28,81 @@ npm run build
 ./bin/agentmirror
 ```
 
-Windows 使用 `.\bin\agentmirror.exe`。默认监听 `0.0.0.0:8766`；本机打开 `http://127.0.0.1:8766`，远程打开 `http://<服务器IP>:8766` 并创建管理员账号；新安装不自动发布测试站点。常规运行无需 Go、Node 或 Python。动态页面克隆与浏览器核查是可选能力，需要额外安装 Node、Playwright、Chromium 和浏览器 worker。
+On Windows, use `.\bin\agentmirror.exe`. The default listen address is `0.0.0.0:8766`. Open `http://127.0.0.1:8766` on the local machine, or `http://<server-ip>:8766` remotely, and create an admin account. A new install does not automatically publish test sites. Ordinary operation does not require Go, Node, or Python. Dynamic page cloning and browser-based review are optional and need an extra install of Node, Playwright, Chromium, and the browser worker.
 
-- [构建、下载与自动发布](docs/BUILDING.md)：Linux x64/ARM64、Windows x64、macOS Intel/Apple Silicon。
-- [蜜罐工作区指南](docs/COMPOSER_GUIDE.md) · [开发指南](docs/DEVELOPMENT.md) · [部署架构](docs/DEPLOYMENT_ARCHITECTURE.md)。
-- [12 个实际评测场景及配套提示词](examples/evaluated-scenarios/README.md) · [English](examples/evaluated-scenarios/README_EN.md)：仅整理已使用的冻结场景，原部署地址已替换为示例地址。
-- [提示词参考文件](prompts/) · [第三方声明](docs/THIRD_PARTY_NOTICES.md)。
+- [Build, download, and automated release](docs/BUILDING.md) (Chinese): Linux x64/ARM64, Windows x64, macOS Intel/Apple Silicon.
+- [Honeypot workspace guide](docs/COMPOSER_GUIDE.md) (Chinese) · [Development guide](docs/DEVELOPMENT.md) (Chinese) · [Deployment architecture](docs/DEPLOYMENT_ARCHITECTURE.md) (Chinese).
+- [12 evaluated scenarios and their prompts](examples/evaluated-scenarios/README_EN.md): only the frozen scenarios actually used in evaluation are included; original deployment addresses have been replaced with examples.
+- [Prompt reference files](prompts/) · [Third-party notices](docs/THIRD_PARTY_NOTICES.md).
 
-### 远程管理与指定地址
+### Remote administration and explicit origins
 
-自 v0.0.4 起，管理端默认监听 `0.0.0.0:8766`，可从其他机器访问 `http://<服务器IP>:8766`，本机仍可使用 `http://127.0.0.1:8766`。新安装通过该地址设置管理员，已有安装继续使用原账号。服务器需允许管理端口入站。
+Since v0.0.4, the admin UI listens on `0.0.0.0:8766` by default. You can reach it from another machine at `http://<server-ip>:8766`; the local machine can still use `http://127.0.0.1:8766`. New installs set up the administrator through that address; existing installs keep their current accounts. The server must allow inbound traffic on the admin port.
 
 ```sh
-# 默认允许通过服务器 IPv4 地址远程访问
+# Allow remote access via the server's IPv4 address (default)
 ./agentmirror --admin-port 8766
 
-# 仅绑定指定网卡的本机 IPv4 地址
+# Bind only a specific local IPv4 address on one interface
 ./agentmirror --admin-host 192.168.1.10 --admin-port 8766
 
-# 仅允许本机连接（也适用于 SSH 转发）
+# Local connections only (also suitable for SSH forwarding)
 ./agentmirror --admin-host 127.0.0.1
 
-# 通过域名或 NAT 映射后的地址访问，保留实际外部端口
+# Access via a domain or a NAT-mapped address, keeping the real external port
 ./agentmirror --admin-origin http://admin.example.com:8766 \
   --admin-origin http://203.0.113.10:18766
 
-# HTTPS 反向代理：代理保留外部 Host，转发到本机 8766
+# HTTPS reverse proxy: the proxy keeps the external Host and forwards to local 8766
 ./agentmirror --admin-host 127.0.0.1 \
   --admin-origin https://admin.example.com
 ```
 
-命令中的 `agentmirror` 替换为实际下载的文件名或 `./bin/agentmirror`。`--admin-host` 指服务器本机的监听地址，不是客户端 IP；`0.0.0.0` 代表所有 IPv4 网卡。`--admin-origin` 可重复，只接受完整的 `http://主机[:端口]` 或 `https://主机[:端口]`，不接受路径、通配符、账号或查询参数。直接访问服务器 IP 无需设置此参数；域名、NAT 外部地址与实际监听地址不同时需要显式指定，避免被 Host 校验拒绝。
+Replace `agentmirror` in the commands with the actual downloaded filename or `./bin/agentmirror`. `--admin-host` is the listen address on the server itself, not a client IP; `0.0.0.0` means all IPv4 interfaces. `--admin-origin` can be repeated. It only accepts a full `http://host[:port]` or `https://host[:port]`; paths, wildcards, credentials, and query strings are not accepted. Direct access by server IP does not need this flag. When a domain or NAT external address differs from the actual listen address, you must set it explicitly, or Host checks will reject the request.
 
-HTTPS 代理需保留原始 `Host`（包含非默认外部端口），并在此配置对应的 HTTPS origin；登录 Cookie 会设置 `Secure`。程序不信任客户端提交的 `Forwarded` / `X-Forwarded-*`。管理员登录、会话令牌和同源写入校验始终启用。管理监听和允许地址只从启动参数读取，修改后重启；已有 Docker/systemd 部署若仍显式使用 `--admin-host 127.0.0.1`，需相应调整启动配置。
+An HTTPS proxy must preserve the original `Host` (including a non-default external port) and you must configure the corresponding HTTPS origin here; the login cookie will be marked `Secure`. The program does not trust client-supplied `Forwarded` / `X-Forwarded-*` headers. Admin login, session tokens, and same-origin write checks are always enabled. Listen and allowed-origin settings are read only from startup flags; restart after changing them. Existing Docker/systemd deployments that still pass `--admin-host 127.0.0.1` need their start configuration updated accordingly.
 
-## 结果占位符与回传
+## Result placeholders and callbacks
 
-提示词可使用 `{{run_id}}`、`{{token}}`、`{{callback_url}}` 和 `{{result.名称}}`。服务端不执行提示词中的命令；被测 Agent 的实际行为需要独立日志验证。HTTP 201 仅代表收件，不代表命令真实执行。场景配置与回传规则详见[工作区指南](docs/COMPOSER_GUIDE.md)。
+Prompts may use `{{run_id}}`, `{{token}}`, `{{callback_url}}`, and `{{result.name}}`. The server does not execute commands that appear in prompts; the tested agent's actual behavior must be verified from independent logs. HTTP 201 only means the payload was received, not that a command really ran. See the [workspace guide](docs/COMPOSER_GUIDE.md) for scenario configuration and callback rules.
 
-## 旧流程迁移与回退
+## Migrating from older workflows
 
-升级前先停止服务并备份数据库，避免新旧程序同时写入同一份数据。公开版本以 Go 工作区流程为主；历史 Python 后端及私有仓库中的回退标签未包含在本次源码发布中。
+Stop the service and back up the database before upgrading, so old and new processes never write the same data at the same time. Public releases are based on the Go workspace workflow. The historical Python backend and rollback tags from the private repository are not included in this source release.
 
-### 内置场景
+### Built-in scenarios
 
-自 `v0.0.2` 起，可执行文件默认内置 [12 个已测场景及对应提示词](examples/evaluated-scenarios/README.md)。首次启动或从 `v0.0.1` 升级会一次性创建工作区草稿，无需手动导入；不会自动发布站点或开启监听端口。未修改且未被引用的旧默认提示词会自动清理，用户编辑和历史记录保留。下载附件未包含，需要使用对应链路时自行补齐。
+Since `v0.0.2`, the executable embeds the [12 evaluated scenarios and their prompts](examples/evaluated-scenarios/README_EN.md). The first start, or an upgrade from `v0.0.1`, creates workspace drafts once; you do not need to import them by hand, and sites are not published or ports opened automatically. Unmodified default prompts that are not referenced are cleaned up automatically; user edits and history are kept. Download attachments are not included; add them yourself when a corresponding path is needed.
 
-## 截图预览
+## Screenshots
 
 
-| 仪表盘（总览 / 活动流） | 最近会话 |
+| Dashboard (overview / activity) | Recent sessions |
 | :---: | :---: |
-| <img width="1634" height="1026" alt="image" src="https://github.com/user-attachments/assets/d6a82916-073a-4188-a884-e0db3d8247a6" /> | <img width="1337" height="832" alt="image" src="https://github.com/user-attachments/assets/9f276329-486a-4f1c-9e58-50815909edd9" /> |
+| <img width="1634" height="1026" alt="Dashboard overview and activity" src="https://github.com/user-attachments/assets/d6a82916-073a-4188-a884-e0db3d8247a6" /> | <img width="1337" height="832" alt="Recent sessions" src="https://github.com/user-attachments/assets/9f276329-486a-4f1c-9e58-50815909edd9" /> |
 
-| 工作区 | 暴露端口 |
+| Workspace | Exposed ports |
 | :---: | :---: |
-| <img width="1634" height="1026" alt="image" src="https://github.com/user-attachments/assets/c1a7c310-5797-4d79-b8f4-ec872291d87c" /> | <img width="1634" height="1026" alt="image" src="https://github.com/user-attachments/assets/0e0c85eb-249f-4e16-a232-d3f860945a24" /> |
+| <img width="1634" height="1026" alt="Workspace" src="https://github.com/user-attachments/assets/c1a7c310-5797-4d79-b8f4-ec872291d87c" /> | <img width="1634" height="1026" alt="Exposed ports" src="https://github.com/user-attachments/assets/0e0c85eb-249f-4e16-a232-d3f860945a24" /> |
 
-| 提示词 | 提示词修改差异化 |
+| Prompts | Prompt diffs |
 | :---: | :---: |
-| <img width="1634" height="1026" alt="image" src="https://github.com/user-attachments/assets/64d4341c-3159-47d4-b306-fc5bde1b761d" /> | <img width="1217" height="797" alt="image" src="https://github.com/user-attachments/assets/ce6312ad-bf28-4a5f-bb0b-4aa350f4424d" /> |
+| <img width="1634" height="1026" alt="Prompts" src="https://github.com/user-attachments/assets/64d4341c-3159-47d4-b306-fc5bde1b761d" /> | <img width="1217" height="797" alt="Prompt diffs" src="https://github.com/user-attachments/assets/ce6312ad-bf28-4a5f-bb0b-4aa350f4424d" /> |
 
-| agent操作 |
+| Agent operations |
 | :---: |
-| <img width="1634" height="1026" alt="image" src="https://github.com/user-attachments/assets/3fcd24e5-291e-4338-a062-67d3b11181ce" /> |
+| <img width="1634" height="1026" alt="Agent operations" src="https://github.com/user-attachments/assets/3fcd24e5-291e-4338-a062-67d3b11181ce" /> |
 
-| 红队agent模拟攻击路径 | 文件托管 |
+| Red-team agent attack path | File hosting |
 | :---: | :---: |
-| <img width="1634" height="1026" alt="image" src="https://github.com/user-attachments/assets/9ab2f81e-2708-4863-9160-bad6d38d7d9c" /> | <img width="1634" height="1026" alt="image" src="https://github.com/user-attachments/assets/98c0c339-4769-45f7-9a86-c18792a091a9" />|
+| <img width="1634" height="1026" alt="Red-team agent attack path" src="https://github.com/user-attachments/assets/9ab2f81e-2708-4863-9160-bad6d38d7d9c" /> | <img width="1634" height="1026" alt="File hosting" src="https://github.com/user-attachments/assets/98c0c339-4769-45f7-9a86-c18792a091a9" />|
 
-## 评估结果
+## Evaluation results
 
-测试流程由 `GPT-6 Astra` 自动化组织与完成，涵盖环境准备、任务调度、测试执行、日志收集、证据核对与报告汇总。各轮分别记录被测模型、框架及 Skill 配置，具体方法、判分口径和用量截图见对应文章。
+The test workflow was organized and completed automatically by `GPT-6 Astra`, covering environment setup, task scheduling, test execution, log collection, evidence review, and report assembly. Each round records the tested model, framework, and Skill configuration. Methods, scoring rules, and usage screenshots are in the corresponding articles.
 
-| 被测模型 | 日期 | 评测文章 |
+| Tested models | Date | Evaluation article |
 | --- | --- | --- |
-| `deepseek-v4.1-flash` | 2026-09-21 | [蜜罐反制评测：结果与方法](docs/evaluations/deepseek-v4.1-flash/README.md) · [English](docs/evaluations/deepseek-v4.1-flash/README_EN.md) |
-| `glm-5.3`、`GLM-5.3-Flash` | 2026-09-23 | [GLM 模型蜜罐反制评测：结果与方法](docs/evaluations/glm-5.3-series/README.md) · [English](docs/evaluations/glm-5.3-series/README_EN.md) |
-| `grok-4.6`、`grok-4.7`、`claude-opus-4-6` | 2026-09-25 | [三模型蜜罐反制评测：结果与方法](docs/evaluations/2026-09-25-multimodel/README.md) · [English](docs/evaluations/2026-09-25-multimodel/README_EN.md) |
+| `deepseek-v4.1-flash` | 2026-09-21 | [Honeypot Countermeasure Evaluation: Results and Methods](docs/evaluations/deepseek-v4.1-flash/README_EN.md) · [中文](docs/evaluations/deepseek-v4.1-flash/README.md) |
+| `glm-5.3`, `GLM-5.3-Flash` | 2026-09-23 | [GLM Models Honeypot Countermeasure Evaluation: Results and Methods](docs/evaluations/glm-5.3-series/README_EN.md) · [中文](docs/evaluations/glm-5.3-series/README.md) |
+| `grok-4.6`, `grok-4.7`, `claude-opus-4-6` | 2026-09-25 | [Three-Model Honeypot Countermeasure Evaluation: Results and Methods](docs/evaluations/2026-09-25-multimodel/README_EN.md) · [中文](docs/evaluations/2026-09-25-multimodel/README.md) |
